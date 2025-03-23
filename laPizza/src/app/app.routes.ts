@@ -6,11 +6,13 @@ import { authGuard } from './auth.guard';
 import { TablaUsuarioComponent } from './componentes/tabla-usuario/tabla-usuario.component';
 import { IframesComponent } from './componentesPhp/iframes/iframes.component';
 import { ReservaComponent } from './componentes/reserva/reserva.component';
+
 export const routes: Routes = [
-    { path: '', component: FormularioComponent },
-    { path: 'inicio-sesion', component: IniciosesionComponent},
-    { path: 'disboard', component: DisboardComponent,canActivate: [authGuard]},
-    { path: 'tablaUsuario', component: TablaUsuarioComponent,canActivate: [authGuard]},
-    { path: 'iframes', component: IframesComponent,canActivate: [authGuard]},
-    { path: 'reserva', component: ReservaComponent},
+    { path: '', redirectTo: 'inicio-sesion', pathMatch: 'full' }, // Redireccion al inicio-sesion
+    { path: 'inicio-sesion', component: IniciosesionComponent },
+    { path: 'disboard', component: DisboardComponent, canActivate: [authGuard] },
+    { path: 'tablaUsuario', component: TablaUsuarioComponent, canActivate: [authGuard] },
+    { path: 'iframes', component: IframesComponent, canActivate: [authGuard] },
+    { path: 'reserva', component: ReservaComponent },
+    { path: 'formulario', component: FormularioComponent }
 ];
