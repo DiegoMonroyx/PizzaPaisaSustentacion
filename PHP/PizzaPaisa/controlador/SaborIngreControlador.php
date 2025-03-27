@@ -43,7 +43,7 @@ $maximoRegistros = 10;
  $desde = ($pagina-1)*$maximoRegistros;
  $totalPaginas=ceil($totalRegistros/$maximoRegistros);
 if(isset($_POST['buscar'])){
-    $obj->idPedido = $_POST['idPedido'];
+    $obj->idSabor = $_POST['idSabor'];
    
 
   $sql2="select * from saboringrediente where idSabor LIKE '%$obj->idSabor%' limit $desde,$maximoRegistros ";

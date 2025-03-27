@@ -1,95 +1,93 @@
 <?php
     include("../../conectar/conexion.php");
-    include('../../controlador/SaborIngreControlador.php');
-    
-   
+    include('../../controlador/ordenCompraControlador.php');
     ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elcrud</title>
+    <title>Orden de compra Pizzas</title>
     <link rel="stylesheet" href="../../Config/css/bootstrap.min.css">
     <link rel="stylesheet" href="../estilos.css">
     <script href="../Config/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/7e532953a9.js" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script src="function.js"></script>
 </head>
 <body>
     <main id="mainadmin">
     
-      <div class="modal fade" id="Reservar" name=""   data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="" style="color: Black;">
+      <div class="modal fade" id="Ordenar" name=""   data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="" style="color: Black;">
         <div class="modal-dialog">
             <div class="modal-content">
             <form action="" class="" method="post">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Sabor Ingrediente</h5>
+                    <h5 class="modal-title" id="staticBackdropLabel">Orden de Compra</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body row g-3">
                                      
                         <div class="col-md-6">
-                                <label for="inputAddress" class="form-label">id sabor</label>
-                                <input type="text" name="idSabor" id="" class="form-control" >
+                                <label for="inputAddress" class="form-label">Id orden</label>
+                                <input type="number" name="idOrden" id="" class="form-control" >
                         </div>
                         <div class="col-md-6">
-                            <label for="inputAddress2" class="form-label">Nombre</label>
-                            <input type="text" name="idIngrediente" id="" class="form-control"  placeholder="">
+                            <label for="inputAddress2" class="form-label">Fecha del Pedido</label>
+                            <input type="date" name="FechaPedido" id="" class="form-control"  placeholder="">
                         </div>
                         <div class="col-md-6">
-                                <label for="inputPassword4" class="form-label">Cantidad en KG</label>
-                                <input type="number" name="Cantidadkg" id="" value="" class="form-control" >
+                                <label for="inputPassword4" class="UsuarioDocumento">Documento del usuario</label>
+                                <input type="number" name="UsuarioDocumento" id="" value="" class="form-control">
                          </div>
-                         
+                        
                         
                         
                      
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit"   name="guardar" class="btn btn-primary">Aceptar</button>
+                    <button type="submit"  href="UsuarioAdmin.php" name="guardar" class="btn btn-primary">Ordenar Compra</button>
                 </div>
             </div>
             </form> 
          </div>
         </div>
+</div>
+    
 
 
 <!-- modal editar-->
-    <div class="modal fade" id="editar" name=""   data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="" style="color: Black;">
+    <div class="modal fade" id="editar" name=""   data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="" style="color: Black; ">
         <div class="modal-dialog">
             <div class="modal-content">
             <form action="" class="" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Modificar</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ></button>
                 </div>
                 <div class="modal-body row g-3">
                                      
-                        
                         <div class="col-md-6">
-                            
-                            <label for="inputAddress2" class="form-label">Sabor</label>
-                            <input type="text" name="idSabor" id="idSabor" class="form-control"  placeholder="" readonly>
+                                <label for="inputAddress" class="form-label">Id de la orden</label>
+                                <input type="number" name="idOrden" id="idOrden" class="form-control" readonly>
                         </div>
                         <div class="col-md-6">
-                        <input type="hidden" name="idIngredientes" id="idIngredientes" class="form-control"  >
-                                <label for="inputPassword4" class="form-label">Ingrediente</label>
-                                <input type="text" name="idIngrediente" id="idIngrediente" class="form-control"  >
+                            <label for="inputAddress2" class="form-label">Fecha de Pedido</label>
+                            <input type="date" name="FechaPedido" id="FechaPedido" class="form-control"  placeholder="">
+                        </div>
+                        <div class="col-md-6">
+                                <label for="inputPassword4" class="form-label">Documento del Usuario</label>
+                                <input type="number" name="UsuarioDocumento" id="UsuarioDocumento" class="form-control" readonly>
                          </div>
-                        <div class="col-md-6">
-                                <label for="inputEmail4" class="form-label">Cantidad</label>
-                                <input type="number" name="Cantidadkg" id="Cantidadkg" class="form-control"  >
-                        </div>
                         
-                       
                         
                         
                      
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit"  href="UsuarioAdmin.php" name="modifica" class="btn btn-primary">modificar</button>
                 </div>
             </div>
@@ -102,21 +100,17 @@
                 <form action="" method="post">
               <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel" style="color:black">Confirmar Eliminacion</h5>
+                    <h5 class="modal-title" id="exampleModalLabel" style="color:black">Eliminar</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="color: black;">
                             <div class="col-12">
-                                    <label for="inputAddress" class="form-label">id Ingrediente</label>
-                                    <input type="text" name="idIngrediente" id="idIngrediente1" class="form-control"  >
-                            </div>
-                            <div class="col-12">
-                                    <label for="inputAddress" class="form-label">id Sabor</label>
-                                    <input type="text" name="idSabor" id="idSabor1" class="form-control"  >
+                                    <label for="inputAddress" class="form-label">Id de la orden</label>
+                                    <input type="text" name="idOrden" id="idOrden1" class="form-control"  >
                             </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" name="elimina" class="btn btn-danger">Confirmar</button>
                 </div>
               </div>
@@ -131,13 +125,11 @@
         <div class="container-fluid mb-3 mt-4 d-flex justify-content-between ">
             
             <form action="" method="post" id="form-buscar">
-            <input class=" me-2 " id="mortorbusq" name="idSabor" type="search" placeholder="Search" aria-label="Search" style="width:400px;">
-            <button class="btn btn-outline-success" name="buscar" value="buscar" type="submit">Search</button>
+            <input class=" me-2 " id="mortorbusq" name="idOrden" type="search" placeholder="Buscar" aria-label="Search" style="width:400px;">
+            <button class="btn btn-outline-success" name="buscar" value="buscar" type="submit">Buscar orden</button>
             </form>
             
-            <button type="button"  class="btn btn-primary d-flex  m-3  " style="heigth:20px ;" data-bs-toggle="modal" data-bs-target="#Reservar">
-            Agregar
-            </button>
+    
            
         </div>
         
@@ -145,12 +137,11 @@
          <thead class=" " id="succes" style = "background-color: #239227;">
         <tr style ="color: white;" >
             
-            
-            <th scope="col">Sabor</th>
-            
-            <th scope="col">Ingrediente</th>
-            <th scope="col">Cantidadkg</th>
-            <th scope="col"></th>
+            <th scope="col">Id de la Orden</th>
+            <th scope="col">Fecha de la orden</th>
+            <th scope="col">Documento del usuario</th>
+            <th scope="col">Accion</th>
+           
             
 
          </tr>
@@ -166,18 +157,16 @@
                 <tr>
                 
                 
-                
+                <td><?php echo $res[0]?></td>
                 <td><?php echo $res[1]?></td>
-                
-                <td><?php echo $res[3]?></td>
-                <td><?php echo $res[4]?></td>
+                <td><?php echo $res[2]?></td>
                 
                 
                 <td><form  class="d-flex  justify-content-center align-items-center" action="" method="post">
                 
                     <button type="button"   class="btn btn-sm btn-danger elimin" ><i class="fa-solid fa-trash"></i></button>
                     
-                    <buttom type="button" class="btn btn-sm btn-primary boton editM "   style="color:black;" ><i class="fa-solid fa-pen-to-square"></i></buttom>
+                    <button type="button" class="btn btn-sm btn-primary boton editM "   style="color:black;" ><i class="fa-solid fa-pen-to-square"></i></buttom>
                     </form>
                 </td>
                 
@@ -198,10 +187,10 @@
                     if($pagina!=1){
                     ?>
                     <li class="page-item ">
-                        <a class="page-link" href="?pagina=<?php echo 1; ?>"><<</a>
+                        <a class="page-link" href="?pagina=<?php echo 1; ?>"><</a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $pagina-1; ?>"><</a>
+                        <a class="page-link" href="?pagina=<?php echo $pagina-1; ?>"><<</a>
                     </li>
                     <?php
                     }
@@ -217,10 +206,10 @@
                     ?>
                     
                     <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $pagina+1; ?>">></a>
+                        <a class="page-link" href="?pagina=<?php echo $pagina+1; ?>">>></a>
                     </li>
                     <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $totalPaginas; ?>">>></a>
+                        <a class="page-link" href="?pagina=<?php echo $totalPaginas; ?>">></a>
                     </li>
                     <?php
                     }
@@ -234,7 +223,7 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
    
-    
+        
         
 </body>
 </html>
@@ -248,10 +237,9 @@
                 return $(this).text();    
                 }).get();
                 console.log(data);
-                $('#idSabor').val(data[0]);
-                $('#idIngrediente').val(data[2]);
-                $('#idIngredientes').val(data[2]);
-                $('#Cantidadkg').val(data[4]);
+                $('#idOrden').val(data[0]);
+                $('#FechaPedido').val(data[1]);
+                $('#UsuarioDocumento').val(data[2]);
                 
                 
     
@@ -265,8 +253,8 @@
             return $(this).text();    
             }).get();
             console.log(data);
-            $('#idSabor1').val(data[0]);
-            $('#idIngrediente1').val(data[2]);
+            $('#idOrden1').val(data[0]);
+            
 
 
         });
