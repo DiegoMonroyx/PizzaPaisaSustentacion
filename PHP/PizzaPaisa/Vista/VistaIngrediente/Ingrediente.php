@@ -1,7 +1,7 @@
 <?php
     include("../../conectar/conexion.php");
     include('../../controlador/IngredienteControlador.php');
-    ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

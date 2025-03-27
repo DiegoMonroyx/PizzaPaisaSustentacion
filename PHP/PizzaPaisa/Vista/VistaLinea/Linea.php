@@ -3,7 +3,7 @@
     include('../../controlador/LineaControlador.php');
     
    
-    ?>
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
