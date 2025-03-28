@@ -27,14 +27,19 @@
         </div>
         <div class="mb-2">
             <label for="idTipoDocumento" class="form-label text-secondary small">Tipo Documento</label>
-            <input type="number" class="form-control rounded-pill form-control-sm" id="idTipoDocumento" formControlName="idTipoDocumento" placeholder="Ingrese el tipo de documento">
+            <select class="form-select rounded-pill form-select-sm" id="tipoDocumento" formControlName="idTipoDocumento">
+                <option value="1">Cédula de Ciudadanía</option>
+                <option value="2">Cédula Extranjera</option>
+                <option value="3">Pasaporte</option>
+            </select>
         </div>
         <div class="mb-2">
             <label for="idTipoUsuario" class="form-label text-secondary small">Tipo Usuario</label>
-            <input type="number" class="form-control rounded-pill form-control-sm" id="idTipoUsuario" formControlName="idTipoUsuario" placeholder="Ingrese el tipo de usuario">
+            <select class="form-select rounded-pill form-select-sm" id="tipoUsuario" formControlName="idTipoUsuario">
+                <option value="3">Cliente</option>
+            </select>
         </div>
 
-        <!-- Botones lado a lado -->
         <div class="d-flex justify-content-between mt-3">
             <button type="submit" class="btn btn-primary px-3 py-1 rounded-pill shadow-sm">Guardar</button>
             <a href="/inicio-sesion" class="btn btn-outline-primary px-3 py-1 rounded-pill shadow-sm">Iniciar Sesión</a>
