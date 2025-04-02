@@ -6,17 +6,23 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ClienteService {
+  private apiUrl = 'http://localhost:8000/api'; // Asegúrate de que esta URL sea correcta
 
-  private apiUrl = 'http://localhost:8000/api/pizzapaisa';
-  
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  // Método para obtener los clientes
-  getClientes(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getTiposUsuario(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/tipos-usuario`); // Uso correcto de la plantilla literal
   }
 
+  getTiposDocumento(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/tipos-documento`); // Uso correcto de la plantilla literal
+  }
+  getClientes(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/usuario`); // Cambia la URL según sea necesario
+}
+
   //updateCliente(usuario: any) {
-   // const url = `http://localhost:8000/api/pizzapaisa/${usuario.UsuarioDocumento}`;
+   // const url = http://localhost:8000/api/pizzapaisa/${usuario.UsuarioDocumento};
 //return this.http.put(url, usuario);}
+
 }

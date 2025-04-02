@@ -18,6 +18,7 @@ include('../../controlador/ordenIngredienteController.php');
 </head>
 
 <body>
+
     <main id="mainadmin">
 
         <div class="modal fade" id="Ordenar" name="" data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="" style="color: Black;">
@@ -81,7 +82,7 @@ include('../../controlador/ordenIngredienteController.php');
                             </div>
                             <div class="col-md-6">
                                 <label for="inputAddress2" class="form-label">Id ingrediente</label>
-                                <input type="text" name="idIngrediente" id="idIngrediente" class="form-control"  readonly>
+                                <input type="text" name="idIngrediente" id="idIngrediente" class="form-control" readonly>
                             </div>
                             <div class="col-md-6">
                                 <label for="inputPassword4" class="form-label">Cantidad solicitada</label>
@@ -89,7 +90,7 @@ include('../../controlador/ordenIngredienteController.php');
                             </div>
                             <div class="col-md-6">
                                 <label for="inputPassword4" class="form-label">Id proveedor</label>
-                                <input type="number" name="idProveedor" id="idProveedor" class="form-control"  readonly>
+                                <input type="number" name="idProveedor" id="idProveedor" class="form-control" readonly>
                             </div>
                             <div class="col-md-6">
                                 <label for="inputPassword4" class="form-label">Cantidad comprada</label>
@@ -253,6 +254,9 @@ include('../../controlador/ordenIngredienteController.php');
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
+    <footer class="container-fluid d-flex justify-content-center align-items-center" style="background-color: #239227;  height: 50px; margin-top: auto; ">
+        <p class="pt-3" style="color: white; font-weight: bold;">@La mejor pizza de pais</p>
+    </footer>
 
 
 

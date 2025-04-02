@@ -1,107 +1,126 @@
 <?php
-  include("../../conectar/conexion.php");
-  include("../../controlador/tipoDocumentoController.php");
+include("../../conectar/conexion.php");
+include("../../controlador/tipoDocumentoController.php");
 
 ?>
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tipo Documento</title>
-    <link rel="stylesheet" href="../../Config/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../estilos.css">
-    <script src="https://kit.fontawesome.com/7e532953a9.js" crossorigin="anonymous"></script>
-    <script src="function.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  </head>
-  <body>
-    <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
-      <table class="table table-bordered border-1 border--bs-secondary-color table-hover bg-light" id="tabla" style="width: 60%; border-radius: 10px; overflow: hidden;">
-          <thead class="border-1 border-dark" id="succes" style="background-color: #239227;">
-              <tr style="color: white">
-                <th scope="col">id</th>
-                <th scope="col" style="text-align: center;">Tipo de Documento</th>
-              </tr>
-          </thead>
-          <tbody class="table-group-divider">
-              <?php
-              $GAU = 1;
-              if ($res == 0) {
-                  echo "<tr><td colspan='2' style='text-align: center;'>No hay registros</td></tr>";
-              } else {
-                  do {
-                      ?>
-                      <tr>
-                          <td><?php echo $res[0]; ?></td>
-                          <td style="display: flex; justify-content: space-between; align-items: center;">
-                              <span><?php echo $res[1]; ?></span>
-                              <form class="d-flex justify-content-center align-items-center" action="" method="post">
-                                  <button type="button" class="btn btn-sm btn-primary boton editM" style="color: black;"><i class="fa-solid fa-pen-to-square"></i></button>
-                              </form>
-                          </td>
-                      </tr>
-                      <div class="modal fade" id="editar" name="" data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="" style="color: Black;">
-                          <div class="modal-dialog">
-                              <div class="modal-content">
-                                  <form action="" class="" method="post">
-                                      <div class="modal-header">
-                                          <h5 class="modal-title" id="staticBackdropLabel">Modificar</h5>
-                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                      </div>
-                                      <div class="modal-body row g-3">
-                                          <div class="col-md-6">
-                                              <label for="inputAddress2" class="form-label">Id Tipo Documento</label>
-                                              <input type="number" name="idTipoDocumento" id="idTipoDocumento" class="form-control" placeholder="" readonly>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <label for="inputPassword4" class="form-label">Tipo de documento</label>
-                                              <input type="text" name="tipoDocumento" id="tipoDocumento" class="form-control">
-                                          </div>
-                                      </div>
-                                      <div class="modal-footer">
-                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                          <button type="submit" href="UsuarioAdmin.php" name="modifica" class="btn btn-success">Modificar</button>
-                                      </div>
-                                  </form>
-                              </div>
-                          </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tipo Documento</title>
+  <link rel="stylesheet" href="../../Config/css/bootstrap.min.css">
+  <link rel="stylesheet" href="../estilos.css">
+  <script src="https://kit.fontawesome.com/7e532953a9.js" crossorigin="anonymous"></script>
+  <script src="function.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+  <div class="contenedor" id="headeri">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #239227;">
+      <div class="container-fluid ">
+
+        <div class="imagenLogo ps-5">
+          <img src="../../Imagenes/Pizza-logo.png" width="60" height="50" alt="">
+        </div>
+        <h1 class="ps-5" id="ELtitulo">Pizza Paisa</h1>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+          aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarSupportedContent">
+          <ul class="navbar-nav ms-auto mb-2  mb-lg-0 ">
+            <li class="nav-item h5 me-4 table-hover " id="hola"><a class="nav-link active " id="navam" href="../landing.php">Inicio</a>
+            </li>
+            <li class="nav-item dropdown h5" id="menuv">
+            <li><a class="dropdown-item" id="elhover" style="color: white;" href="Vista/VistaUsuario/landing.php">Cerrar Sesion</a></li>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+    <table class="table table-bordered border-1 border--bs-secondary-color table-hover bg-light" id="tabla" style="width: 60%; border-radius: 10px; overflow: hidden;">
+      <thead class="border-1 border-dark" id="succes" style="background-color: #239227;">
+        <tr style="color: white">
+          <th scope="col">id</th>
+          <th scope="col" style="text-align: center;">Tipo de Documento</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <?php
+        $GAU = 1;
+        if ($res == 0) {
+          echo "<tr><td colspan='2' style='text-align: center;'>No hay registros</td></tr>";
+        } else {
+          do {
+        ?>
+            <tr>
+              <td><?php echo $res[0]; ?></td>
+              <td style="display: flex; justify-content: space-between; align-items: center;">
+                <span><?php echo $res[1]; ?></span>
+                <form class="d-flex justify-content-center align-items-center" action="" method="post">
+                  <button type="button" class="btn btn-sm btn-primary boton editM" style="color: black;"><i class="fa-solid fa-pen-to-square"></i></button>
+                </form>
+              </td>
+            </tr>
+            <div class="modal fade" id="editar" name="" data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="" style="color: Black;">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <form action="" class="" method="post">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="staticBackdropLabel">Modificar</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body row g-3">
+                      <div class="col-md-6">
+                        <label for="inputAddress2" class="form-label">Id Tipo Documento</label>
+                        <input type="number" name="idTipoDocumento" id="idTipoDocumento" class="form-control" placeholder="" readonly>
                       </div>
-                      <?php
-                  } while ($res = mysqli_fetch_array($ejecuta));
-              }
-              ?>
-          </tbody>
-      </table>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    
-  </body>
-  <script>
-    $(document).ready(function(){
-      $('.editM').on('click', function(){
-        $('#editar').modal('show');
-        $tr = $(this).closest('tr');
-        var data = $tr.children('td').map(function(){
-          return $(this).text();
-        }).get();
-        console.log(data);
-        $('#idTipoDocumento').val(data[0]);
-        $('#tipoDocumento').val(data[1]); 
-      });
+                      <div class="col-md-6">
+                        <label for="inputPassword4" class="form-label">Tipo de documento</label>
+                        <input type="text" name="tipoDocumento" id="tipoDocumento" class="form-control">
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <button type="submit" href="UsuarioAdmin.php" name="modifica" class="btn btn-success">Modificar</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        <?php
+          } while ($res = mysqli_fetch_array($ejecuta));
+        }
+        ?>
+      </tbody>
+    </table>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
+</body>
+<script>
+  $(document).ready(function() {
+    $('.editM').on('click', function() {
+      $('#editar').modal('show');
+      $tr = $(this).closest('tr');
+      var data = $tr.children('td').map(function() {
+        return $(this).text();
+      }).get();
+      console.log(data);
+      $('#idTipoDocumento').val(data[0]);
+      $('#tipoDocumento').val(data[1]);
     });
 
-
-
-
-
-
-
-
-
-  </script>
+  });
+</script>
 
 
 
