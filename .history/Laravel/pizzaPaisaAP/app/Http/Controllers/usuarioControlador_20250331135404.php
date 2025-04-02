@@ -8,8 +8,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
-
-
 class usuarioControlador extends Controller
 {
     public function index (){
@@ -28,7 +26,7 @@ class usuarioControlador extends Controller
         [
             'UsuarioDocumento'=>'Required|min:2|max:40',
             'UsuarioTelefono'=>'Required|min:2|max:40',
-            'Contrasena'=>'Required|min:2|max:100',
+            'Contrasena'=>'Required|min:8|max:100',
             'Correo'=>'Required|email',
             'UsuarioPrimerNombre'=>'Required|min:2|max:40',
             'UsuarioApellido'=>'Required|min:2|max:40',
@@ -80,23 +78,25 @@ class usuarioControlador extends Controller
     
     
         $usuario = usuarioModelo::where('UsuarioDocumento', $credentials['UsuarioDocumento'])
-            ->where('Correo', $credentials['Correo'])
-            ->first();
+                                 ->where('Correo', $credentials['Correo'])
+                                 ->first();
     
-            if ($usuario && Hash::check($credentials['Contrasena'], $usuario->Contrasena)) {
-                $token = JWTAuth::fromUser($usuario);
+        if ($usuario && $credentials['Contrasena'] === $usuario->Contrasena) {
+           
+            $token = JWTAuth::fromUser($usuario);
             return response()->json([
                 'message' => 'Inicio de sesión exitoso',
                 'token' => $token,
                 'usuario' => $usuario,
                 'status' => 200
-                ], 200);
-            } else {
+            ], 200);
+        } else {
+           
             return response()->json([
-            'message' => 'Credenciales incorrectas',
-            'status' => 401], 401);
-            }
-                                
+                'message' => 'Credenciales incorrectas',
+                'status' => 401
+            ], 401);
+        }
     }
     public function show($UsuarioDocumento){
         $usuario = usuarioModelo::find($UsuarioDocumento);

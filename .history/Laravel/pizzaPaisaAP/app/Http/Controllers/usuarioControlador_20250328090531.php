@@ -6,9 +6,6 @@ use App\Http\Controllers;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
-
-
 
 class usuarioControlador extends Controller
 {
@@ -48,7 +45,7 @@ class usuarioControlador extends Controller
             [
                 'UsuarioDocumento'=>$request->UsuarioDocumento,
                 'UsuarioTelefono'=>$request->UsuarioTelefono,
-                'Contrasena' => Hash::make($request->Contrasena),
+                'Contrasena'=>$request->Contrasena,
                 'Correo'=>$request->Correo,
                 'UsuarioPrimerNombre'=>$request->UsuarioPrimerNombre,
                 'UsuarioApellido'=>$request->UsuarioApellido,
@@ -80,23 +77,25 @@ class usuarioControlador extends Controller
     
     
         $usuario = usuarioModelo::where('UsuarioDocumento', $credentials['UsuarioDocumento'])
-            ->where('Correo', $credentials['Correo'])
-            ->first();
+                                 ->where('Correo', $credentials['Correo'])
+                                 ->first();
     
-            if ($usuario && Hash::check($credentials['Contrasena'], $usuario->Contrasena)) {
-                $token = JWTAuth::fromUser($usuario);
+        if ($usuario && $credentials['Contrasena'] === $usuario->Contrasena) {
+           
+            $token = JWTAuth::fromUser($usuario);
             return response()->json([
                 'message' => 'Inicio de sesión exitoso',
                 'token' => $token,
                 'usuario' => $usuario,
                 'status' => 200
-                ], 200);
-            } else {
+            ], 200);
+        } else {
+           
             return response()->json([
-            'message' => 'Credenciales incorrectas',
-            'status' => 401], 401);
-            }
-                                
+                'message' => 'Credenciales incorrectas',
+                'status' => 401
+            ], 401);
+        }
     }
     public function show($UsuarioDocumento){
         $usuario = usuarioModelo::find($UsuarioDocumento);

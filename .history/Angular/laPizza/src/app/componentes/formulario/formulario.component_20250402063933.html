@@ -1,0 +1,61 @@
+<div class="container-sm mt-4 p-3 bg-light rounded shadow-sm" style="max-width: 500px;">
+    <h2 class="text-center mb-3 text-primary">Registro de Usuario</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="mb-2">
+        <label for="UsuarioDocumento" class="form-label text-secondary small">Documento</label>
+        <input type="number" class="form-control rounded-pill form-control-sm" id="UsuarioDocumento"
+          formControlName="UsuarioDocumento" placeholder="Ingrese su documento">
+        
+      </div>
+      <div class="mb-2">
+        <label for="UsuarioTelefono" class="form-label text-secondary small">Teléfono</label>
+        <input type="number" class="form-control rounded-pill form-control-sm" id="UsuarioTelefono"
+          formControlName="UsuarioTelefono" placeholder="Ingrese su teléfono">
+        
+      </div>
+      <div class="mb-2">
+        <label for="Contrasena" class="form-label text-secondary small">Contraseña</label>
+        <input type="password" class="form-control rounded-pill form-control-sm" id="Contrasena"
+          formControlName="Contrasena" placeholder="Ingrese su contraseña">
+        
+      </div>
+      <div class="mb-2">
+        <label for="Correo" class="form-label text-secondary small">Correo</label>
+        <input type="email" class="form-control rounded-pill form-control-sm" id="Correo" formControlName="Correo"
+          placeholder="Ingrese su correo electrónico">
+       
+      </div>
+      <div class="mb-2">
+        <label for="UsuarioPrimerNombre" class="form-label text-secondary small">Nombre</label>
+        <input type="text" class="form-control rounded-pill form-control-sm" id="UsuarioPrimerNombre"
+          formControlName="UsuarioPrimerNombre" placeholder="Ingrese su nombre">
+       
+      </div>
+      <div class="mb-2">
+        <label for="UsuarioApellido" class="form-label text-secondary small">Apellido</label>
+        <input type="text" class="form-control rounded-pill form-control-sm" id="UsuarioApellido"
+          formControlName="UsuarioApellido" placeholder="Ingrese su apellido">
+        
+      </div>
+      <div class="mb-2">
+        <label for="idTipoDocumento" class="form-label text-secondary small">Tipo Documento</label>
+        <select id="idTipoDocumento" formControlName="idTipoDocumento" class="form-control rounded-pill form-control-sm">
+          <option value="" disabled selected>Selecciona el tipo de documento</option>
+          <option *ngFor="let tipo of tiposDocumento" [value]="tipo.idTipoDocumento">{{ tipo.tipoDocumento }}</option>
+        </select>
+        <div *ngIf="form.get('idTipoDocumento')?.invalid && (form.get('idTipoDocumento')?.touched || form.get('idTipoDocumento')?.dirty)" class="text-danger small">
+        
+        </div>
+      </div>
+      <div class="mb-2">
+        <label for="idTipoUsuario" class="form-label text-secondary small">Tipo Usuario</label>
+        <select id="idTipoUsuario" formControlName="idTipoUsuario" class="form-control rounded-pill form-control-sm">
+          <option [value]="tiposUsuario[0].idTipoUsuario">{{ tiposUsuario[0].tipoUsuario }}</option>
+        </select>
+      </div>
+      <div class="d-flex justify-content-between mt-3">
+        <button type="submit" class="btn btn-primary px-3 py-1 rounded-pill shadow-sm" [disabled]="form.invalid">Guardar</button>
+        <a href="/inicio-sesion" class="btn btn-outline-primary px-3 py-1 rounded-pill shadow-sm">Iniciar Sesión</a>
+      </div>
+    </form>
+  </div>

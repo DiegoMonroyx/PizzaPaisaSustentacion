@@ -24,14 +24,14 @@ export class FormularioComponent implements OnInit {
 
   constructor(private http: HttpClient, private router: Router, private fb: FormBuilder, private clienteService: ClienteService) {
     this.form = this.fb.group({
-      UsuarioDocumento: ['', [Validators.required, Validators.pattern('^[0-9]*$')]], 
-      UsuarioTelefono: ['', [Validators.required, Validators.pattern('^[0-9]*$')]], 
-      Contrasena: ['', [Validators.required, Validators.minLength(6)]], 
-      Correo: ['', [Validators.required, Validators.email]], 
-      UsuarioPrimerNombre: ['', Validators.required], 
-      UsuarioApellido: ['', Validators.required], 
-      idTipoDocumento: ['', Validators.required], 
-      idTipoUsuario: [this.tiposUsuario[0].idTipoUsuario, Validators.required] 
+      UsuarioDocumento: ['', [Validators.required, Validators.pattern('^[0-9]*$')]], // Requerido y solo números
+      UsuarioTelefono: ['', [Validators.required, Validators.pattern('^[0-9]*$')]], // Requerido y solo números
+      Contrasena: ['', [Validators.required, Validators.minLength(6)]], // Requerido y longitud mínima de 6
+      Correo: ['', [Validators.required, Validators.email]], // Requerido y correo electrónico
+      UsuarioPrimerNombre: ['', Validators.required], // Requerido
+      UsuarioApellido: ['', Validators.required], // Requerido
+      idTipoDocumento: ['', Validators.required], // Requerido
+      idTipoUsuario: [this.tiposUsuario[0].idTipoUsuario, Validators.required] // Requerido
     });
   }
 
@@ -46,7 +46,6 @@ export class FormularioComponent implements OnInit {
   
 
   onSubmit() {
-    console.log('Formulario inválido:', this.form.invalid);
     if (this.form.valid) {
       const datos = this.form.value;
       this.http.post('http://localhost:8000/api/pizzapaisa', datos).subscribe({

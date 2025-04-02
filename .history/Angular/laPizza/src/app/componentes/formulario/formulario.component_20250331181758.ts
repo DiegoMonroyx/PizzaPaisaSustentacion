@@ -46,7 +46,6 @@ export class FormularioComponent implements OnInit {
   
 
   onSubmit() {
-    console.log('Formulario inválido:', this.form.invalid);
     if (this.form.valid) {
       const datos = this.form.value;
       this.http.post('http://localhost:8000/api/pizzapaisa', datos).subscribe({

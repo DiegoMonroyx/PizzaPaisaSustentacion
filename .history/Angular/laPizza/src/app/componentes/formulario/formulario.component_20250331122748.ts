@@ -4,54 +4,52 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { ClienteService } from '../../cliente.service';
-import { CommonModule } from '@angular/common';
-
 @Component({
   selector: 'app-formulario',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterLink, RouterOutlet],
+  imports: [ReactiveFormsModule, RouterLink, RouterOutlet],
   templateUrl: './formulario.component.html',
   styleUrls: ['./formulario.component.css'] 
 })
-export class FormularioComponent implements OnInit {
+export class FormularioComponent {
   form: FormGroup;
-  tiposUsuario = [{ idTipoUsuario: 3, tipoUsuario: 'Cliente' }];
-  tiposDocumento = [
-    { idTipoDocumento: 1, tipoDocumento: 'Cédula de ciudadanía' },
-    { idTipoDocumento: 2, tipoDocumento: 'Cédula extranjera' },
-    { idTipoDocumento: 3, tipoDocumento: 'Pasaporte' }
-  ];
+  tipoUsuario: any[] = [];
+  tipoDocumento: any[] = [];
 
   constructor(private http: HttpClient, private router: Router, private fb: FormBuilder, private clienteService: ClienteService) {
-    this.form = this.fb.group({
-      UsuarioDocumento: ['', [Validators.required, Validators.pattern('^[0-9]*$')]], 
-      UsuarioTelefono: ['', [Validators.required, Validators.pattern('^[0-9]*$')]], 
-      Contrasena: ['', [Validators.required, Validators.minLength(6)]], 
-      Correo: ['', [Validators.required, Validators.email]], 
-      UsuarioPrimerNombre: ['', Validators.required], 
-      UsuarioApellido: ['', Validators.required], 
-      idTipoDocumento: ['', Validators.required], 
-      idTipoUsuario: [this.tiposUsuario[0].idTipoUsuario, Validators.required] 
+    this.form = new FormGroup({
+      UsuarioDocumento: new FormControl(''),
+      UsuarioTelefono: new FormControl(''),
+      Contrasena: new FormControl(''),
+      Correo: new FormControl(''),
+      UsuarioPrimerNombre: new FormControl(''),
+      UsuarioApellido: new FormControl(''),
+      idTipoDocumento: new FormControl(''),
+      idTipoUsuario: new FormControl('')
     });
   }
 
   ngOnInit() {
+    this.form = this.fb.group({
+      idTipoUsuario: ['', Validators.required],
+      idTipoDocumento: ['', Validators.required]
+    });
+    this.clienteService.getTiposUsuario().subscribe(tipos => {
+      this.tipoUsuario = tipos; // Asegúrate de usar el nombre correcto
+    });
     this.clienteService.getTiposDocumento().subscribe(tipos => {
-      console.log('Tipos de documento recibidos:', tipos); 
-      this.tiposDocumento = tipos; 
-    }, error => {
-      console.error('Error al obtener tipos de documento:', error);
+      this.tipoDocumento = tipos; // Asegúrate de usar el nombre correcto
     });
   }
-  
+
 
   onSubmit() {
-    console.log('Formulario inválido:', this.form.invalid);
     if (this.form.valid) {
       const datos = this.form.value;
       this.http.post('http://localhost:8000/api/pizzapaisa', datos).subscribe({
         next: (respuesta) => {
           console.log('Datos enviados exitosamente', respuesta);
+
           this.router.navigate(['/inicio-sesion']);
         },
         error: (error) => {

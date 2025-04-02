@@ -15,7 +15,7 @@ import { CommonModule } from '@angular/common';
 })
 export class FormularioComponent implements OnInit {
   form: FormGroup;
-  tiposUsuario = [{ idTipoUsuario: 3, tipoUsuario: 'Cliente' }];
+  tiposUsuario = [{ idTipoUsuario: 3, tipoUsuario: 'Cliente' }]; // Solo una opción para Tipo Usuario
   tiposDocumento = [
     { idTipoDocumento: 1, tipoDocumento: 'Cédula de ciudadanía' },
     { idTipoDocumento: 2, tipoDocumento: 'Cédula extranjera' },
@@ -24,29 +24,25 @@ export class FormularioComponent implements OnInit {
 
   constructor(private http: HttpClient, private router: Router, private fb: FormBuilder, private clienteService: ClienteService) {
     this.form = this.fb.group({
-      UsuarioDocumento: ['', [Validators.required, Validators.pattern('^[0-9]*$')]], 
-      UsuarioTelefono: ['', [Validators.required, Validators.pattern('^[0-9]*$')]], 
-      Contrasena: ['', [Validators.required, Validators.minLength(6)]], 
-      Correo: ['', [Validators.required, Validators.email]], 
-      UsuarioPrimerNombre: ['', Validators.required], 
-      UsuarioApellido: ['', Validators.required], 
-      idTipoDocumento: ['', Validators.required], 
-      idTipoUsuario: [this.tiposUsuario[0].idTipoUsuario, Validators.required] 
+      UsuarioDocumento: [''],
+      UsuarioTelefono: [''],
+      Contrasena: [''],
+      Correo: [''],
+      UsuarioPrimerNombre: [''],
+      UsuarioApellido: [''],
+      idTipoDocumento: ['', Validators.required],
+      idTipoUsuario: [this.tiposUsuario[0].idTipoUsuario, Validators.required] // Establecer valor por defecto
     });
   }
 
   ngOnInit() {
+    // Aquí puedes cargar tiposUsuario desde el servicio si lo necesitas
     this.clienteService.getTiposDocumento().subscribe(tipos => {
-      console.log('Tipos de documento recibidos:', tipos); 
-      this.tiposDocumento = tipos; 
-    }, error => {
-      console.error('Error al obtener tipos de documento:', error);
+      this.tiposDocumento = tipos; // Asegúrate de que esta variable esté definida
     });
   }
-  
 
   onSubmit() {
-    console.log('Formulario inválido:', this.form.invalid);
     if (this.form.valid) {
       const datos = this.form.value;
       this.http.post('http://localhost:8000/api/pizzapaisa', datos).subscribe({

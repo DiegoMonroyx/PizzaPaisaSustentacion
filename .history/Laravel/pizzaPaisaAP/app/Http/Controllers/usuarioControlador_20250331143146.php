@@ -73,7 +73,7 @@ class usuarioControlador extends Controller
     public function login(Request $request){
     
         $credentials = $request->validate([
-            'UsuarioDocumento' => 'required|string',
+            'UsuarioDocumento' => 'required|number',
             'Correo' => 'required|email',
             'Contrasena' => 'required|string',
         ]);
