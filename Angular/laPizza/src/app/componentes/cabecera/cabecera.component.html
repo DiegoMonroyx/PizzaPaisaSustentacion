@@ -29,9 +29,10 @@
                   <li><a class="dropdown-item table-hover" id="elhover" *ngIf="esGerente" target="contenido-iframe" [routerLink]="['/iframes']" [queryParams]="{url: 'http://localhost/PizzaPaisa/Vista/VistaIngrediente/Ingrediente.php'}" >Ingrediente</a></li>
                   <li><a class="dropdown-item table-hover" id="elhover" *ngIf="esGerente" target="contenido-iframe" [routerLink]="['/iframes']" [queryParams]="{url: 'http://localhost/PizzaPaisa/Vista/VistaProvedor/provedor.php'}" >Proveedores</a></li>
                   <li><a class="dropdown-item table-hover" id="elhover" *ngIf="esGerente" target="contenido-iframe"[routerLink]="['/iframes']"  [queryParams]="{url: 'http://localhost/PizzaPaisa/Vista/ordenCompra/ordenCompra.php'}" >Ordenes</a></li>
+                  <li><a class="dropdown-item table-hover" id="elhover" *ngIf="esGerente" target="contenido-iframe"[routerLink]="['/iframes']"  [queryParams]="{url: 'http://localhost/PizzaPaisa/Vista/tipoDocumento/tipoDocumento.php'}" >Tipo de Documentos</a></li>
+                  <li><a class="dropdown-item table-hover" id="elhover" *ngIf="esGerente" target="contenido-iframe"[routerLink]="['/iframes']"  [queryParams]="{url: 'http://localhost/PizzaPaisa/Vista/tipoUsuario/tipoUsuario.php'}" >Tipos de Usuarios</a></li>
                   <li><a class="dropdown-item table-hover" id="elhover" *ngIf="esGerente" target="contenido-iframe" [routerLink]="['/tablaUsuario']">Usuarios</a>
-                    <li><a class="dropdown-item table-hover" id="elhover" *ngIf="esGerente" target="contenido-iframe"[routerLink]="['/iframes']"  [queryParams]="{url: 'http://localhost/PizzaPaisa/Vista/tipoDocumento/tipoDocumento.php'}" >Tipo de documentos</a></li>
-                    <li><a class="dropdown-item table-hover" id="elhover" *ngIf="esGerente" target="contenido-iframe"[routerLink]="['/iframes']"  [queryParams]="{url: 'http://localhost/PizzaPaisa/Vista/tipoUsuario/tipoUsuario.php'}" >Tipos de usuarios</a></li>
+
                   </li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item"  (click)="onLogout()">Cerrar Sesión</a></li>
