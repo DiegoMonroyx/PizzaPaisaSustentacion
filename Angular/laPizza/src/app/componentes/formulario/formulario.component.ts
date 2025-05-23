@@ -55,6 +55,7 @@ export class FormularioComponent implements OnInit {
     this.http.post(url, datos).subscribe({
       next: (respuesta) => {
         console.log('Datos enviados exitosamente', respuesta);
+         console.log('wenas');
         this.router.navigate(['/inicio-sesion']);
       },
       error: (error) => {
