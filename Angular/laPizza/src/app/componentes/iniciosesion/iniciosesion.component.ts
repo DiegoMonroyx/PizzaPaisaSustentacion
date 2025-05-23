@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -25,7 +26,7 @@ export class IniciosesionComponent {
   onLogin() {
     if (this.form.valid) {
       const datos = this.form.value;
-      this.http.post<{ token: string, usuario: any }>('http://localhost:8000/api/login', datos)
+      this.http.post<{ token: string, usuario: any }>('${environment.apiUrl}/login', datos)
         .subscribe({
           next: (respuesta) => {
             console.log('Inicio de sesión exitoso', respuesta);

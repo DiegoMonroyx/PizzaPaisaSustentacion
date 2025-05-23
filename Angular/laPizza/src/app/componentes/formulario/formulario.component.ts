@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { ClienteService } from '../../cliente.service';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-formulario',
@@ -46,20 +47,22 @@ export class FormularioComponent implements OnInit {
   
 
   onSubmit() {
-    console.log('Formulario inválido:', this.form.invalid);
-    if (this.form.valid) {
-      const datos = this.form.value;
-      this.http.post('http://localhost:8000/api/pizzapaisa', datos).subscribe({
-        next: (respuesta) => {
-          console.log('Datos enviados exitosamente', respuesta);
-          this.router.navigate(['/inicio-sesion']);
-        },
-        error: (error) => {
-          console.log('Hubo un error al enviar los datos', error);
-        }
-      });
-    } else {
-      console.log('Error en el formulario');
-    }
+  console.log('Formulario inválido:', this.form.invalid);
+  if (this.form.valid) {
+    const datos = this.form.value;
+    const url = `${environment.apiUrl}/pizzapaisa`;
+    console.log('URL para enviar:', url);
+    this.http.post(url, datos).subscribe({
+      next: (respuesta) => {
+        console.log('Datos enviados exitosamente', respuesta);
+        this.router.navigate(['/inicio-sesion']);
+      },
+      error: (error) => {
+        console.log('Hubo un error al enviar los datos', error);
+      }
+    });
+  } else {
+    console.log('Error en el formulario');
   }
+}
 }

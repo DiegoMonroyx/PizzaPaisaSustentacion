@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -75,7 +76,7 @@ export class OrdenComponent {
       const datos = this.form.value;
       const documento = localStorage.getItem('documento');
 
-      this.http.post<any>('http://127.0.0.1:8000/api/orden-compra', {
+      this.http.post<any>('${environment.apiUrl}/orden-compra', {
         UsuarioDocumento: documento
       }).subscribe({
         next: (respuesta) => {
@@ -86,7 +87,7 @@ export class OrdenComponent {
             items: datos.items
           };
 
-          this.http.post('http://127.0.0.1:8000/api/orden-ingrediente', payload)
+          this.http.post('${environment.apiUrl}/orden-ingrediente', payload)
             .subscribe({
               next: (res) => {
                 console.log('Orden registrada con éxito', res);

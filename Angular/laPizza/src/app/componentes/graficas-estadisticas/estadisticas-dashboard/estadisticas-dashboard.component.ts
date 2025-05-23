@@ -4,6 +4,7 @@ import { ChartConfiguration } from 'chart.js';
 import { NgChartsModule } from 'ng2-charts';
 import { CommonModule } from '@angular/common';
 import { ChartOptions, ChartType, ChartData } from 'chart.js';
+import { environment } from '../../../../environments/environment';
 
 
 @Component({
@@ -52,15 +53,15 @@ export class EstadisticasDashboardComponent implements OnInit {
   }
 
   cargarResumen() {
-    this.http.get<any>('http://localhost:8000/api/total-ordenes').subscribe(r => this.totalOrdenes = r.totalOrdenes);
-    this.http.get<any>('http://localhost:8000/api/total-porciones-vendidas').subscribe(r => this.totalPorciones = r.total);
-    this.http.get<any>('http://localhost:8000/api/promedio-porcion-orden').subscribe(r => this.promedioPorciones = r.promedioPorcionesPorOrden);
-    this.http.get<any>('http://localhost:8000/api/promedio-valor-orden').subscribe(r => this.promedioValor = r.promedio);
-    this.http.get<any>('http://localhost:8000/api/total-ingresos').subscribe(r => this.totalIngresos = r.totalIngresos);
+    this.http.get<any>('${environment.apiUrl}/api/total-ordenes').subscribe(r => this.totalOrdenes = r.totalOrdenes);
+    this.http.get<any>('${environment.apiUrl}/api/total-porciones-vendidas').subscribe(r => this.totalPorciones = r.total);
+    this.http.get<any>('${environment.apiUrl}/api/promedio-porcion-orden').subscribe(r => this.promedioPorciones = r.promedioPorcionesPorOrden);
+    this.http.get<any>('${environment.apiUrl}/api/promedio-valor-orden').subscribe(r => this.promedioValor = r.promedio);
+    this.http.get<any>('${environment.apiUrl}/api/total-ingresos').subscribe(r => this.totalIngresos = r.totalIngresos);
   }
 
   cargarOrdenesPorDia() {
-    this.http.get<any>('http://localhost:8000/api/total-ordenes-por-dia').subscribe(r => {
+    this.http.get<any>('${environment.apiUrl}/api/total-ordenes-por-dia').subscribe(r => {
       const data = r.resultados;
   
       const labels = ['Viernes', 'Sábado', 'Domingo'];
@@ -130,7 +131,7 @@ export class EstadisticasDashboardComponent implements OnInit {
   }
 
   cargarOrdenesPorMes() {
-    this.http.get<any>('http://localhost:8000/api/total-ordenes-por-mes').subscribe(r => {
+    this.http.get<any>('${environment.apiUrl}/api/total-ordenes-por-mes').subscribe(r => {
       const data = r.ventasPorMes;
   
       const monthNames = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -206,7 +207,7 @@ export class EstadisticasDashboardComponent implements OnInit {
 
 
   cargarVentasPorSabor() {
-    this.http.get<any>('http://localhost:8000/api/ventas-por-sabor').subscribe(r => {
+    this.http.get<any>('${environment.apiUrl}/ventas-por-sabor').subscribe(r => {
       const data = r.ventasPorSabor;
 
       this.ventasPorSaborOptions = { // 👈 usar this

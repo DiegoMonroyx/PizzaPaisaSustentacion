@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { environment } from '../../../environments/environment';
 import {
   FormBuilder,
   FormGroup,
@@ -166,7 +167,7 @@ export class ReservaComponent implements OnInit {
 
     // Petición al backend
     this.http
-      .post('http://127.0.0.1:8000/api/reserva', {
+      .post('${environment.apiUrl}/reserva', {
         FechaHoraEntrega: this.resumenPedido.FechaHoraEntrega,
         PrecioTotal: this.resumenPedido.TotalPrecio,
         UsuarioDocumento: localStorage.getItem('documento')
@@ -182,7 +183,7 @@ export class ReservaComponent implements OnInit {
           });
           // Enviamos cada línea de pedido
           this.resumenPedido.pizzas!.forEach((item: any) =>
-            this.http.post('http://127.0.0.1:8000/api/linea', item).subscribe()
+            this.http.post('${environment.apiUrl}/api/linea', item).subscribe()
           );
         },
         error: err => {
