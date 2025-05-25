@@ -87,7 +87,7 @@ export class OrdenComponent {
             items: datos.items
           };
 
-          this.http.post('${environment.apiUrl}/orden-ingrediente', payload)
+          this.http.post(`${environment.apiUrl}/orden-ingrediente`, payload)
             .subscribe({
               next: (res) => {
                 console.log('Orden registrada con éxito', res);

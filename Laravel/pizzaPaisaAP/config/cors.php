@@ -20,8 +20,7 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-    'https://psychic-zebra-jjjxjvj6qr4xcp7x4-4200.app.github.dev',
-    'https://psychic-zebra-jjjxjvj6qr4xcp7x4-8000.app.github.dev',
+    'https://psychic-zebra-jjjxjvj6qr4xcp7x4-4200.app.github.dev'
     ],
 
     'allowed_headers' => ['*'],
