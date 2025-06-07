@@ -167,7 +167,7 @@ export class ReservaComponent implements OnInit {
 
     // Petición al backend
     this.http
-      .post('${environment.apiUrl}/reserva', {
+      .post(`${environment.apiUrl}/reserva`, {
         FechaHoraEntrega: this.resumenPedido.FechaHoraEntrega,
         PrecioTotal: this.resumenPedido.TotalPrecio,
         UsuarioDocumento: localStorage.getItem('documento')
@@ -183,7 +183,7 @@ export class ReservaComponent implements OnInit {
           });
           // Enviamos cada línea de pedido
           this.resumenPedido.pizzas!.forEach((item: any) =>
-            this.http.post('${environment.apiUrl}/api/linea', item).subscribe()
+            this.http.post(`${environment.apiUrl}/api/linea`, item).subscribe()
           );
         },
         error: err => {
