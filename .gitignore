@@ -34,6 +34,7 @@ yarn-error.log
 # =====================
 Angular/laPizza/.angular/
 Angular/laPizza/dist/
+Angular/laPizza/node_modules/
 Angular/laPizza/out-tsc/
 .tmp/
 **/.angular/cache/
