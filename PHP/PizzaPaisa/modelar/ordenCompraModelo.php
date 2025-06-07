@@ -1,5 +1,7 @@
 <?php
-
+namespace modelar;
+include_once __DIR__ . '/../conectar/conexion.php';
+use conectar\Conexion;
 class OrdenDeCompra
 {
     public $idOrden;
@@ -66,6 +68,8 @@ class OrdenDeCompra
 
     public function eliminar()
     {
+        // ¡Esto es clave! Ponlo antes de conectar:
+        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         try {
             $c = new Conexion();
             $cone = $c->conectando();
@@ -76,11 +80,12 @@ class OrdenDeCompra
             if ($stmt->execute()) {
                 echo '<script>Swal.fire({position: "top", icon: "success", title: "La orden se eliminó del Sistema", showConfirmButton: false, timer: 3000});</script>';
             } else {
-                echo '<script> Swal.fire({position: "top", icon: "warning", title: "No se pudo eliminar la orden del sistema", showConfirmButton: false, timer: 3000});</script>';
+                echo '<script>Swal.fire({position: "top", icon: "warning", title: "No se pudo eliminar la orden del sistema", showConfirmButton: false, timer: 3000});</script>';
             }
             $stmt->close();
-        } catch (Exception $e) {
-            echo '<script> Swal.fire({position: "top", icon: "warning", title: "No se pudo eliminar la orden del sistema", showConfirmButton: false, timer: 3000});</script>';
+        } catch (\mysqli_sql_exception $e) {
+            // Aquí puedes personalizar aún más el mensaje si quieres detectar el código de error
+            echo '<script>Swal.fire({position: "top", icon: "warning", title: "No se puede eliminar la orden porque tiene ingredientes asociados.", showConfirmButton: false, timer: 3000});</script>';
         }
     }
 }

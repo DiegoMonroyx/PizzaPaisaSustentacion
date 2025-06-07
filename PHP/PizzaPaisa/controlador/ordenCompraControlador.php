@@ -1,5 +1,8 @@
 <?php
-include_once '../../modelar/ordenCompraModelo.php';
+include_once __DIR__ . '/../modelar/ordenCompraModelo.php';
+include_once __DIR__ . '/../conectar/conexion.php';
+use conectar\Conexion;
+use modelar\OrdenDeCompra;
 
 $obj = new OrdenDeCompra();
 
