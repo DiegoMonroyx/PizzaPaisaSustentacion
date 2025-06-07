@@ -15,7 +15,7 @@ RUN npm install -g @angular/cli
 COPY . .
 
 # Construir la app Angular para producción
-RUN npm run build -- --configuration production
+RUN npm run  
 
 # Exponer el puerto por defecto Angular usa en dev server (opcional)
 EXPOSE 4200
