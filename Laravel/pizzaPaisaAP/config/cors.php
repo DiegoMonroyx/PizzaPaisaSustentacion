@@ -20,7 +20,7 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-    'http://20.55.34.81:4200'
+    'https://psychic-zebra-jjjxjvj6qr4xcp7x4-4200.app.github.dev'
     ],
 
     'allowed_headers' => ['*'],
