@@ -2,7 +2,7 @@
 
     class Conexion{
 
-        private $servidor = "localhost";
+        private $servidor = "127.0.0.1";
 
         private $usuario = "root";
         
