@@ -6,7 +6,7 @@ class tipousuario {
     public $idTipoUsuario;
     public $tipoUsuario;
 
-    function modificar() {
+    public function modificar() {
         $c = new Conexion();
         $cone = $c->conectando();
 

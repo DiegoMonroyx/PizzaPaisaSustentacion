@@ -9,7 +9,7 @@ class Sabor {
     public $precioPorcion;
     public $correo;
 
-    function agregar() {
+    public function agregar() {
         $conet = new Conexion();
         $c = $conet->conectando();
 
@@ -59,7 +59,7 @@ class Sabor {
         $stmt->close();
     }
 
-    function modificar() {
+    public function modificar() {
         $c = new Conexion();
         $cone = $c->conectando();
         $sql = "SELECT * FROM sabor WHERE idSabor = ?";
@@ -103,7 +103,7 @@ class Sabor {
         $stmt->close();
     }
 
-    function eliminar() {
+    public function eliminar() {
         try {
             $c = new Conexion();
             $cone = $c->conectando();

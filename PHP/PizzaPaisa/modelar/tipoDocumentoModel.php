@@ -6,7 +6,7 @@ class tipodocumento {
     public $idTipoDocumento;
     public $tipoDocumento;
 
-    function modificar() {
+    public function modificar() {
         $c = new Conexion();
         $cone = $c->conectando();
 

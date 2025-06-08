@@ -9,7 +9,7 @@ class proveedor {
     public $nombreProveedor;
     public $numeroTelefono;
 
-    function agregar() {
+    public function agregar() {
         $conet = new Conexion();
         $c = $conet->conectando();
         $query = "SELECT * FROM proveedor WHERE idProveedor = ?";
@@ -40,7 +40,7 @@ class proveedor {
         $stmt->close();
     }
 
-    function modificar() {
+    public function modificar() {
         $c = new Conexion();
         $cone = $c->conectando();
         $sql = "SELECT * FROM proveedor WHERE idProveedor = ?";
@@ -76,7 +76,7 @@ class proveedor {
         $stmt->close();
     }
 
-    function eliminar() {
+    public function eliminar() {
         try {
             $c = new Conexion();
             $cone = $c->conectando();

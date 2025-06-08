@@ -12,7 +12,7 @@ class Reserva {
     public $usuarioDocumento;
     public $usuarioApellido;
 
-    function agregar() {
+    public function agregar() {
         $conet = new Conexion();
         $c = $conet->conectando();
 
@@ -95,7 +95,7 @@ class Reserva {
         exit;
     }
 
-    function modificar() {
+    public function modificar() {
         $c = new Conexion();
         $cone = $c->conectando();
 
@@ -148,7 +148,7 @@ class Reserva {
         $stmt->close();
     }
 
-    function eliminar() {
+    public function eliminar() {
         try {
             $c = new Conexion();
             $cone = $c->conectando();
