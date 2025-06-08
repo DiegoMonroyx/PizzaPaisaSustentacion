@@ -1,6 +1,8 @@
 <?php
-  include_once '../../modelar/tipoUsuarioModell.php';
-
+  include_once __DIR__ . '/../modelar/tipoUsuarioModell.php';
+  include_once __DIR__ . '/../conectar/conexion.php';
+  use conectar\Conexion;
+  use modelar\tipousuario;
   $obj = new tipousuario();
 
   if (isset($_POST['modifica'])) {

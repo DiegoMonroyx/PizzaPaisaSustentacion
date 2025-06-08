@@ -1,6 +1,8 @@
 <?php
-include_once '../../modelar/SaborIngreModelo.php';
-
+include_once __DIR__ . '/../modelar/SaborIngreModelo.php';
+include_once __DIR__ . '/../conectar/conexion.php';
+use conectar\Conexion;
+use modelar\SaborIngrediente;
 $obj = new SaborIngrediente();
 
 if (isset($_POST['guardar'])) {

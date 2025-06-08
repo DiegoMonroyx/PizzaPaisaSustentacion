@@ -1,6 +1,8 @@
 <?php
-  include_once '../../modelar/tipoDocumentoModel.php';
-
+include_once __DIR__ . '/../modelar/tipoDocumentoModel.php';
+include_once __DIR__ . '/../conectar/conexion.php';
+use conectar\Conexion;
+use modelar\tipodocumento;
   $obj = new tipodocumento();
 
   if (isset($_POST['modifica'])) {

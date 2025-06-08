@@ -1,6 +1,8 @@
 <?php
-include_once '../../modelar/SaborModelo.php';
-
+include_once __DIR__ . '/../modelar/SaborModelo.php';
+include_once __DIR__ . '/../conectar/conexion.php';
+use conectar\Conexion;
+use modelar\Sabor;
 $obj = new Sabor();
 
 if ($_POST) {}

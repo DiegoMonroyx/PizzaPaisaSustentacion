@@ -1,6 +1,8 @@
 <?php
-include_once '../../modelar/ordenIngredienteModel.php';
-
+include_once __DIR__ . '/../modelar/ordenIngredienteModel.php';
+include_once __DIR__ . '/../conectar/conexion.php';
+use conectar\Conexion;
+use modelar\ordeningrediente;
 $obj = new ordeningrediente();
 
 if ($_POST) {

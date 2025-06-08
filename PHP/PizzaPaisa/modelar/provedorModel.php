@@ -1,4 +1,7 @@
 <?php
+namespace modelar;
+include_once __DIR__ . '/../conectar/conexion.php';
+use conectar\Conexion;
 class proveedor {
     public $barrio;
     public $direccion;

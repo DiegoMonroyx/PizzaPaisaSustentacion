@@ -1,5 +1,8 @@
 <?php
-include_once '../../modelar/IngredienteModelo.php';
+include_once __DIR__ . '/../modelar/IngredienteModelo.php';
+include_once __DIR__ . '/../conectar/conexion.php';
+use conectar\Conexion;
+use modelar\Ingrediente;
 $obj = new Ingrediente();
 
 if(isset($_POST['guardar'])){

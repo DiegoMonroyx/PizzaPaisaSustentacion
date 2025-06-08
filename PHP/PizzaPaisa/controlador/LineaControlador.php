@@ -1,6 +1,8 @@
 <?php
-include_once '../../modelar/ModeloLinea.php';
-
+include_once __DIR__ . '/../modelar/ModeloLinea.php';
+include_once __DIR__ . '/../conectar/conexion.php';
+use conectar\Conexion;
+use modelar\Linea;
 $obj = new Linea();
 if(isset($_POST['guardar'])){
     $obj->idSabor = $_POST['idSabor'];

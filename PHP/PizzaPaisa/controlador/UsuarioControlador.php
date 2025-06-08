@@ -1,6 +1,8 @@
 <?php
-include_once '../../modelar/UsuarioModelo.php';
-
+include_once __DIR__ . '/../modelar/UsuarioModelo.php';
+include_once __DIR__ . '/../conectar/conexion.php';
+use conectar\Conexion;
+use modelar\Usuarios;
 $obj = new Usuarios();
 
 if ($_POST) {}

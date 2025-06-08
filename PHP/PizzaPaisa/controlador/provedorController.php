@@ -1,6 +1,8 @@
 <?php
-include_once '../../modelar/provedorModel.php';
-
+include_once __DIR__ . '/../modelar/provedorModel.php';
+include_once __DIR__ . '/../conectar/conexion.php';
+use conectar\Conexion;
+use modelar\proveedor;
 $obj = new proveedor();
 
 if (isset($_POST['guardar'])) {
