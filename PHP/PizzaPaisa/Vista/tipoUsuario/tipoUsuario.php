@@ -28,6 +28,7 @@ if (isset($_POST['buscar']) && !empty($_POST['idTipoUsuario'])) {
     <script src="https://kit.fontawesome.com/7e532953a9.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   </head>
   <body>
     <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
@@ -93,7 +94,7 @@ if (isset($_POST['buscar']) && !empty($_POST['idTipoUsuario'])) {
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
       $(document).ready(function(){
         $('.editM').on('click', function(){
