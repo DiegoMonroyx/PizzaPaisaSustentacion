@@ -48,7 +48,9 @@ class TipoUsuario
         $stmt->execute();
         $result = $stmt->get_result();
         $datos = [];
-        while ($row = $result->fetch_assoc()) $datos[] = $row;
+        while ($row = $result->fetch_assoc()){ 
+            $datos[] = $row;
+        }
         $stmt->close();
         return $datos;
     }
@@ -59,7 +61,9 @@ class TipoUsuario
         $sql = "SELECT * FROM tipousuario";
         $res = $c->query($sql);
         $datos = [];
-        while ($row = $res->fetch_assoc()) $datos[] = $row;
+        while ($row = $res->fetch_assoc()){ 
+            $datos[] = $row;
+        }
         return $datos;
     }
 }
