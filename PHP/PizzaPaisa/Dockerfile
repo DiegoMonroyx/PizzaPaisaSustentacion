@@ -5,7 +5,7 @@ FROM php:8.1-apache
 RUN docker-php-ext-install mysqli
 
 # Copy project files to the web root
-COPY . /var/www/html/
+COPY /var/www/html/
 
 # Set correct permissions (optional but recommended)
 RUN chown -R www-data:www-data /var/www/html
