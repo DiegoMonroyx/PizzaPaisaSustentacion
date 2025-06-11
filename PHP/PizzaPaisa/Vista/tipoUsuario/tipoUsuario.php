@@ -26,9 +26,13 @@ if (isset($_POST['buscar']) && !empty($_POST['idTipoUsuario'])) {
     <link rel="stylesheet" href="../../Config/css/bootstrap.min.css">
     <link rel="stylesheet" href="../estilos.css">
     <script src="https://kit.fontawesome.com/7e532953a9.js" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"
+        integrity="sha256-/3xqD3d8VQ4C/2uvq/Fo6+4n1jIRp82oP7XnF6SlQxA="
+        crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-cVKIPhbuKT1zEhlKU6Fa6l5gWQ5l9F2s4l2F5jR8LqjEjh4u57rR1aVt3+0U6bKG"
+        crossorigin="anonymous"></script>
   </head>
   <body>
     <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
@@ -94,7 +98,7 @@ if (isset($_POST['buscar']) && !empty($_POST['idTipoUsuario'])) {
             </div>
         </div>
     </div>
-    
+
     <script>
       $(document).ready(function(){
         $('.editM').on('click', function(){
