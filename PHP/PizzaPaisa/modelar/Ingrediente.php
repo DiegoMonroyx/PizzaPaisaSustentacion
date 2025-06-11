@@ -81,35 +81,32 @@ use conectar\Conexion;
             $stmt->close();
         }
 
-        public function eliminar(){
-            try{
-                $c = new Conexion();
-                $cone = $c->conectando();
-
-                // Elimina usando consulta preparada
-                $sql = "DELETE FROM ingrediente WHERE idIngrediente = ?";
-                $stmt = $cone->prepare($sql);
-                $stmt->bind_param("s", $this->idIngrediente);
-                $stmt->execute();
-                $stmt->close();
-
-                echo '<script>Swal.fire({
-                    position: "top",
-                    icon: "success",
-                    title: "El Ingrediente Fue Eliminado del Sistema",
-                    showConfirmButton: false,
-                    timer: 3000
-                });</script>';
-            }catch(Exception $e){
-                echo '<script>Swal.fire({
-                    position: "top",
-                    icon: "warning",
-                    title: "El Ingrediente no se Puede Eliminar Porque Tiene Datos Relacionados",
-                    showConfirmButton: false,
-                    timer: 3000
-                });</script>';
-            }
+        public function eliminar()
+    {
+        try {
+            $c = (new Conexion())->conectando();
+            $sql = "DELETE FROM ingrediente WHERE idIngrediente = ?";
+            $stmt = $c->prepare($sql);
+            $stmt->bind_param("s", $this->idIngrediente);
+            $stmt->execute();
+            $stmt->close();
+            echo "<script>Swal.fire({
+                position: 'top',
+                icon: 'success',
+                title: 'El Ingrediente Fue Eliminado del Sistema',
+                showConfirmButton: false,
+                timer: 3000
+            });</script>";
+        } catch (\Exception $e) {
+            echo "<script>Swal.fire({
+                position: 'top',
+                icon: 'warning',
+                title: 'El Ingrediente no se Puede Eliminar Porque Tiene Datos Relacionados',
+                showConfirmButton: false,
+                timer: 3000
+            });</script>";
         }
+     }
     }
 
 ?><script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
