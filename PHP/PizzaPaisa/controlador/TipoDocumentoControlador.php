@@ -22,30 +22,10 @@ class TipoDocumentoControlador
 
     public function buscar($idTipoDocumento)
     {
-        $c = (new Conexion())->conectando();
-        $sql = "SELECT * FROM tipodocumento WHERE idTipoDocumento LIKE ?";
-        $stmt = $c->prepare($sql);
-        $like = "%$idTipoDocumento%";
-        $stmt->bind_param("s", $like);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $datos = [];
-        while ($row = $result->fetch_assoc()) {
-            $datos[] = $row;
-        }
-        $stmt->close();
-        return $datos;
+        return $this->model->buscar($idTipoDocumento);
     }
-
     public function listar()
     {
-        $c = (new Conexion())->conectando();
-        $sql = "SELECT * FROM tipodocumento";
-        $res = $c->query($sql);
-        $datos = [];
-        while ($row = $res->fetch_assoc()) {
-            $datos[] = $row;
-        }
-        return $datos;
+        return $this->model->listar();
     }
 }
