@@ -1,68 +1,67 @@
 <?php
-include_once __DIR__ . '/../modelar/ModeloLinea.php';
-include_once __DIR__ . '/../conectar/conexion.php';
-use conectar\Conexion;
+namespace Controlador;
+
 use modelar\Linea;
-$obj = new Linea();
-if(isset($_POST['guardar'])){
-    $obj->idSabor = $_POST['idSabor'];
-    $obj->idPedido = $_POST['idPedido'];
-    $obj->numeroPorciones = $_POST['NumeroPorciones']; // Usa el nombre correcto
-    $obj->agregar();
-}
+use conectar\Conexion;
 
-if(isset($_POST['modifica'])){
-    $obj->idSabor = $_POST['idSabor'];
-    $obj->idSabores = $_POST['idSabores'];
-    $obj->idPedido = $_POST['idPedido'];
-    $obj->numeroPorciones = $_POST['NumeroPorciones']; // Usa el nombre correcto
-    $obj->modificar();
-}
+class LineaControlador {
+    public $model;
 
-if(isset($_POST['elimina'])){
-    $obj->idSabor = $_POST['idSabor'];
-    $obj->idPedido = $_POST['idPedido'];
-    $obj->eliminar();
-}
+    public function __construct()
+    {
+        $this->model = new Linea();
+    }
+    public function guardar($data) {
+        $this->model->idSabor         = $data['idSabor'];
+        $this->model->idPedido        = $data['idPedido'];
+        $this->model->numeroPorciones = $data['NumeroPorciones'];
+        $this->model->agregar();
+    }
 
-// Paginación y búsqueda segura
-$cone  = new Conexion();
-$c = $cone->conectando();
-$sql1 = "SELECT COUNT(*) as totalRegistro FROM linea";
-$ejecuta1 = mysqli_query($c, $sql1);
-$res1 = mysqli_fetch_array($ejecuta1);
-$totalRegistros = $res1['totalRegistro'];
-$maximoRegistros = 6;
-if(empty($_GET['pagina'])){
-    $pagina = 1;
-}else{
-    $pagina = $_GET['pagina'];
-}
-$desde = ($pagina-1) * $maximoRegistros;
-$totalPaginas = ceil($totalRegistros / $maximoRegistros);
+    public function modificar($data) {
+        $this->model->idSabor         = $data['idSabor'];
+        $this->model->idPedido        = $data['idPedido'];
+        $this->model->numeroPorciones = $data['NumeroPorciones'];
+        $this->model->modificar();
+    }
 
-if(isset($_POST['buscar'])){
-    $obj->idPedido = $_POST['idPedido'];
-    // Consulta preparada para evitar inyección SQL
-    $sql2 = "SELECT * FROM linea WHERE idPedido LIKE ? LIMIT ?, ?";
-    $stmt = $c->prepare($sql2);
-    $search = "%".$obj->idPedido."%";
-    $stmt->bind_param("sii", $search, $desde, $maximoRegistros);
-    $stmt->execute();
-    $ejecuta = $stmt->get_result();
-    $res = $ejecuta->fetch_array();
-    $stmt->close();
-} else {
-    $sql2 = "SELECT l.idPedido, s.idSabor, Nombre_Pizza, (numeroPorciones * Precio_Porcion) AS Precio_Porcion, numeroPorciones, UsuarioDocumento 
-        FROM linea l 
-        INNER JOIN reserva r ON l.idPedido = r.idPedido
-        INNER JOIN sabor s ON l.idSabor = s.idSabor 
-        ORDER BY l.idPedido ASC  
-        LIMIT $desde,$maximoRegistros";
+    public function eliminar($idPedido, $idSabor) {
+        $this->model->idPedido = $idPedido;
+        $this->model->idSabor  = $idSabor;
+        $this->model->eliminar();
+    }
+
+    public function buscar($idPedido) {
+        $cone = new Conexion();
+        $c = $cone->conectando();
+        $stmt = $c->prepare("SELECT * FROM linea WHERE idPedido LIKE ?");
+        $search = "%{$idPedido}%";
+        $stmt->bind_param("s", $search);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_array();
+        $stmt->close();
+        return $res;
+    }
+
+    public function listar() {
+    $cone = new Conexion();
+    $c = $cone->conectando();
+    $sql2 = "SELECT l.idPedido, 
+                    s.idSabor, 
+                    Nombre_Pizza, 
+                    (numeroPorciones * Precio_Porcion) AS Precio_Porcion, 
+                    numeroPorciones, 
+                    UsuarioDocumento 
+             FROM linea l 
+             INNER JOIN reserva r ON l.idPedido = r.idPedido
+             INNER JOIN sabor s ON l.idSabor = s.idSabor 
+             ORDER BY l.idPedido ASC";
     $ejecuta = mysqli_query($c, $sql2);
-    $res = mysqli_fetch_array($ejecuta);
+    $datos = [];
+    while ($row = mysqli_fetch_assoc($ejecuta)) {
+        $datos[] = $row;
+    }
+    return $datos;
 }
-
-// Aquí podrías manejar $_POST['listar'] si lo necesitas
-
+}
 ?>

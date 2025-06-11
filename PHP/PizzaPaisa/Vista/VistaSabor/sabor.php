@@ -1,9 +1,31 @@
 <?php
-    include("../../conectar/conexion.php");
-    include('../../controlador/SaborControlador.php');
-    
-   
-    ?>
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use Controlador\SaborControlador;
+
+$ctrl = new SaborControlador();
+
+// Manejo de formularios
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['guardar'])) {
+        $ctrl->guardar($_POST);
+    }
+    if (isset($_POST['modifica'])) {
+        $ctrl->modificar($_POST);
+    }
+    if (isset($_POST['elimina'])) {
+        $ctrl->eliminar($_POST['idSabor']);
+    }
+}
+
+// Búsqueda y listado
+$sabores = [];
+if (isset($_POST['buscar']) && !empty($_POST['idSabor'])) {
+    $sabores = $ctrl->buscar($_POST['idSabor']);
+} else {
+    $sabores = $ctrl->listar();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -140,7 +162,7 @@
         <table  class="table border border-1 border-dark rounded-3 bg-light" id="latabla" >
          <thead class=" " id="succes" style = "background-color: #239227;">
         <tr style ="color: white;" >
-            
+            <th scope="col">IdPizza</th>
             <th scope="col">Pizza</th>
             <th scope="col">Precio</th>
             <th scope="col">Accion</th>
@@ -150,37 +172,24 @@
          </tr>
         </thead>
         <tbody>
-            <?php
-                $GAU = 1;
-                if($res == 0){
-                    echo "No hay registros";
-                }else {
-                    do{
-            ?>
-                <tr>
-                
-                <td><?php echo $res[1]?></td>
-                <td><?php echo $res[2]?></td>
-                
-                
-                <td><form  class="d-flex  justify-content-left align-items-left" action="" method="post">
-                
-                    <button type="button"   class="btn btn-sm btn-danger elimin" ><i class="fa-solid fa-trash"></i></button>
-                    
-                    <buttom type="button" class="btn btn-sm btn-primary boton editM "   style="color:black;" ><i class="fa-solid fa-pen-to-square"></i></buttom>
-                    </form>
-                </td>
-                
-                </tr>
-                
-            <?php
-                    }while($res = mysqli_fetch_array($ejecuta));
-
-                }
-
-         
-            ?>
-        </tbody>
+                <?php if (!empty($sabores)): ?>
+                    <?php foreach ($sabores as $row): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['idSabor']) ?></td>
+                            <td><?= htmlspecialchars($row['Nombre_Pizza']) ?></td>
+                            <td><?= htmlspecialchars($row['Precio_Porcion']) ?></td>
+                            <td>
+                                <form class="d-flex justify-content-left align-items-left" action="" method="post">
+                                    <button type="button" class="btn btn-sm btn-danger elimin"><i class="fa-solid fa-trash"></i></button>
+                                    <button type="button" class="btn btn-sm btn-primary editM" style="color:black;"><i class="fa-solid fa-pen-to-square"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><td colspan="4">No hay registros</td></tr>
+                <?php endif; ?>
+            </tbody>
     </table>
 
     </main>
@@ -206,9 +215,6 @@
                 $('#NombrePizza').val(data[1]);
                 $('#PrecioPorcion').val(data[2]);
 
-                
-    
-
             });
 
             $('.elimin').on('click', function(){
@@ -226,7 +232,4 @@
 
         });
   
-
-        
-
 </script>

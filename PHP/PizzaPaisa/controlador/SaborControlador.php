@@ -1,53 +1,65 @@
 <?php
-include_once __DIR__ . '/../modelar/SaborModelo.php';
-include_once __DIR__ . '/../conectar/conexion.php';
-use conectar\Conexion;
+namespace Controlador;
+
 use modelar\Sabor;
-$obj = new Sabor();
+use conectar\Conexion;
 
-if ($_POST) {}
+class SaborControlador
+{
+    private $model;
 
-if (isset($_POST['guardar'])) {
-    $obj->idSabor = $_POST['idSabor'];
-    $obj->nombrePizza = $_POST['NombrePizza'];        // Propiedad camelCase
-    $obj->precioPorcion = $_POST['PrecioPorcion'];    // Propiedad camelCase
-    $obj->agregar();
+    public function __construct()
+    {
+        $this->model = new Sabor();
+    }
+
+    public function guardar($data)
+    {
+        $this->model->idSabor       = $data['idSabor'];
+        $this->model->nombrePizza   = $data['NombrePizza'];
+        $this->model->precioPorcion = $data['PrecioPorcion'];
+        $this->model->agregar();
+    }
+
+    public function modificar($data)
+    {
+        $this->model->idSabor       = $data['idSabor'];
+        $this->model->nombrePizza   = $data['NombrePizza'];
+        $this->model->precioPorcion = $data['PrecioPorcion'];
+        $this->model->modificar();
+    }
+
+    public function eliminar($idSabor)
+    {
+        $this->model->idSabor = $idSabor;
+        $this->model->eliminar();
+    }
+
+    public function buscar($idSabor)
+    {
+        $c = (new Conexion())->conectando();
+        $query = "SELECT * FROM sabor WHERE idSabor LIKE ?";
+        $stmt = $c->prepare($query);
+        $like = "%$idSabor%";
+        $stmt->bind_param("s", $like);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $sabores = [];
+        while ($row = $result->fetch_assoc()) {
+            $sabores[] = $row;
+        }
+        $stmt->close();
+        return $sabores;
+    }
+
+    public function listar()
+    {
+        $c = (new Conexion())->conectando();
+        $result = $c->query("SELECT * FROM sabor ORDER BY idSabor ASC");
+        $sabores = [];
+        while ($row = $result->fetch_assoc()) {
+            $sabores[] = $row;
+        }
+        return $sabores;
+    }
 }
-
-if (isset($_POST['modifica'])) {
-    $obj->idSabor = $_POST['idSabor'];
-    $obj->nombrePizza = $_POST['NombrePizza'];
-    $obj->precioPorcion = $_POST['PrecioPorcion'];
-    $obj->modificar();
-}
-
-if (isset($_POST['elimina'])) {
-    $obj->idSabor = $_POST['idSabor'];
-    $obj->eliminar();
-}
-
-$cone  = new Conexion();
-$c = $cone->conectando();
-
-if (isset($_POST['buscar'])) {
-    $obj->idSabor = $_POST['idSabor'];
-
-    // Consulta preparada para evitar inyección SQL
-    $sql2 = "SELECT * FROM sabor WHERE idSabor LIKE ?";
-    $stmt = $c->prepare($sql2);
-    $likeIdSabor = "%" . $obj->idSabor . "%";
-    $stmt->bind_param("s", $likeIdSabor);
-    $stmt->execute();
-    $ejecuta = $stmt->get_result();
-    $res = $ejecuta->fetch_array();
-    $stmt->close();
-} else {
-    $sql2 = "SELECT * FROM sabor";
-    $ejecuta = mysqli_query($c, $sql2);
-    $res = mysqli_fetch_array($ejecuta);
-}
-
-if (isset($_POST['listar'])) {
-    // tu lógica aquí...
-}
-?>

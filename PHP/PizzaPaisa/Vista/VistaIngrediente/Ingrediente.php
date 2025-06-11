@@ -1,7 +1,22 @@
 <?php
-    include("../../conectar/conexion.php");
-    include('../../controlador/IngredienteControlador.php');
-    ?>
+require_once __DIR__ . '/../../vendor/autoload.php';
+use Controlador\IngredienteControlador;
+
+// Instancia el controlador y obtiene los ingredientes
+$ctrl = new IngredienteControlador();
+
+if (isset($_POST['guardar'])) {
+    $ctrl->guardar($_POST);
+}
+if (isset($_POST['modifica'])) {
+    $ctrl->modificar($_POST);
+}
+if (isset($_POST['elimina'])) {
+    $ctrl->eliminar($_POST['idIngrediente']);
+}
+
+$ingredientes = $ctrl->listar();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -133,7 +148,7 @@
         <table  class="table border border-1 border-dark rounded-3 bg-light" id="latabla">
          <thead class=" " id="succes" style = "background-color: #239227;">
         <tr style ="color: white;" >
-            
+            <th scope="col">idIngrediente</th>
             <th scope="col">NombreIngrediente</th>
             <th scope="col">Existenciaskg</th>
             <th scope="col">Accion</th>
@@ -143,37 +158,26 @@
          </tr>
         </thead>
         <tbody>
-            <?php
-                $GAU = 1;
-                if($res == 0){
-                    echo "No hay registros";
-                }else {
-                    do{
-            ?>
+            <?php if ($ingredientes && count($ingredientes) > 0): ?>
+                <?php foreach ($ingredientes as $row): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($row['idIngrediente']) ?></td>
+                        <td><?= htmlspecialchars($row['Descripcion']) ?></td>
+                        <td><?= htmlspecialchars($row['Existenciaskg']) ?></td>
+                        <td>
+                            <!-- Botones de acción, el idIngrediente va oculto si lo necesitas para editar/eliminar -->
+                            <form style="display:inline;">
+                                <button type="button" class="btn btn-sm btn-danger elimin"><i class="fa-solid fa-trash"></i></button>
+                                <button type="button" class="btn btn-sm btn-primary editM"><i class="fa-solid fa-pen-to-square"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
                 <tr>
-                
-                
-                <td><?php echo $res[1]?></td>
-                <td><?php echo $res[2]?></td>
-                
-                
-                <td><form  class="d-flex  justify-content-left align-items-left" action="" method="post">
-                
-                    <button type="button"   class="btn btn-sm btn-danger elimin" ><i class="fa-solid fa-trash"></i></button>
-                    
-                    <buttom type="button" class="btn btn-sm btn-primary boton editM "   style="color:black;" ><i class="fa-solid fa-pen-to-square"></i></buttom>
-                    </form>
-                </td>
-                
+                    <td colspan="3">No hay registros</td>
                 </tr>
-                
-            <?php
-                    }while($res = mysqli_fetch_array($ejecuta));
-
-                }
-
-         
-            ?>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>
@@ -201,9 +205,6 @@
                 $('#Descripcion').val(data[1]);
                 $('#Existenciaskg').val(data[2]);
                 
-                
-    
-
             });
 
             $('.elimin').on('click', function(){
@@ -215,13 +216,8 @@
             console.log(data);
             $('#idIngrediente1').val(data[0]);
             
-
-
         });
 
         });
   
-
-        
-
 </script>

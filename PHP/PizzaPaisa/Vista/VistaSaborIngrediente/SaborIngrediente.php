@@ -1,9 +1,28 @@
 <?php
-    include("../../conectar/conexion.php");
-    include('../../controlador/SaborIngreControlador.php');
-    
-   
-    ?>
+require_once __DIR__ . '/../../vendor/autoload.php';
+
+use Controlador\SaborIngredienteControlador;
+
+$ctrl = new SaborIngredienteControlador();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['guardar'])) {
+        $ctrl->guardar($_POST);
+    }
+    if (isset($_POST['modifica'])) {
+        $ctrl->modificar($_POST);
+    }
+    if (isset($_POST['elimina'])) {
+        $ctrl->eliminar($_POST['idSabor'], $_POST['idIngrediente']);
+    }
+}
+
+if (isset($_POST['buscar']) && !empty($_POST['idSabor'])) {
+    $datos = $ctrl->buscar($_POST['idSabor'], $desde, $maximoRegistros);
+} else {
+    $datos = $ctrl->listar();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -144,89 +163,37 @@
         <table  class="table border border-1 border-dark rounded-3 bg-light" id="latabla" >
          <thead class=" " id="succes" style = "background-color: #239227;">
         <tr style ="color: white;" >
-            
-            
+            <th scope="col">idSabor</th>
             <th scope="col">Sabor</th>
-            
+            <th scope="col">idIngredinete</th>
             <th scope="col">Ingrediente</th>
             <th scope="col">Cantidadkg</th>
             <th scope="col"></th>
-            
-
          </tr>
         </thead>
         <tbody>
-            <?php
-                $GAU = 1;
-                if($res == 0){
-                    echo "No hay registros";
-                }else {
-                    do{
-            ?>
-                <tr>
-                
-                
-                
-                <td><?php echo $res[1]?></td>
-                
-                <td><?php echo $res[3]?></td>
-                <td><?php echo $res[4]?></td>
-                
-                
-                <td><form  class="d-flex  justify-content-center align-items-center" action="" method="post">
-                
-                    <button type="button"   class="btn btn-sm btn-danger elimin" ><i class="fa-solid fa-trash"></i></button>
-                    
-                    <buttom type="button" class="btn btn-sm btn-primary boton editM "   style="color:black;" ><i class="fa-solid fa-pen-to-square"></i></buttom>
-                    </form>
-                </td>
-                
-                </tr>
-                
-            <?php
-                    }while($res = mysqli_fetch_array($ejecuta));
-
-                }
-
-         
-            ?>
+                <?php if (!empty($datos)): ?>
+                    <?php foreach ($datos as $row): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['idSabor']) ?></td>
+                            <td><?= htmlspecialchars($row['Nombre_Pizza']) ?></td>
+                            <td><?= htmlspecialchars($row['idIngrediente']) ?></td>
+                            <td><?= htmlspecialchars($row['Descripcion']) ?></td>
+                            <td><?= htmlspecialchars($row['Cantidadkg']) ?></td>
+                            <td>
+                                <form class="d-flex justify-content-center align-items-center" action="" method="post">
+                                    <button type="button" class="btn btn-sm btn-danger elimin"><i class="fa-solid fa-trash"></i></button>
+                                    <button type="button" class="btn btn-sm btn-primary editM" style="color:black;"><i class="fa-solid fa-pen-to-square"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr><td colspan="6">No hay registros</td></tr>
+                <?php endif; ?>
         </tbody>
     </table>
-    <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <?php 
-                    if($pagina!=1){
-                    ?>
-                    <li class="page-item ">
-                        <a class="page-link" href="?pagina=<?php echo 1; ?>"><<</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $pagina-1; ?>"><</a>
-                    </li>
-                    <?php
-                    }
-                    for($i=1; $i<=$totalPaginas; $i++){
-                        if($i==$pagina){
-                            echo'<li class="page-item active" aria-current="page"><a class="page-link" href="?pagina='.$i.'">'.$i.'</a></li>';    
-                        }
-                        else{
-                            echo'<li class="page-item "><a class="page-link" href="?pagina='.$i.'">'.$i.'</a></li>'; 
-                        }
-                    }
-                    if($pagina !=$totalPaginas){
-                    ?>
-                    
-                    <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $pagina+1; ?>">></a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $totalPaginas; ?>">>></a>
-                    </li>
-                    <?php
-                    }
-                    ?>
-                </ul>
-            </nav>
+    
 </div>
 
     </main>
@@ -252,10 +219,6 @@
                 $('#idIngrediente').val(data[2]);
                 $('#idIngredientes').val(data[2]);
                 $('#Cantidadkg').val(data[4]);
-                
-                
-    
-
             });
 
             $('.elimin').on('click', function(){
@@ -268,12 +231,8 @@
             $('#idSabor1').val(data[0]);
             $('#idIngrediente1').val(data[2]);
 
-
         });
 
         });
-  
-
-        
 
 </script>

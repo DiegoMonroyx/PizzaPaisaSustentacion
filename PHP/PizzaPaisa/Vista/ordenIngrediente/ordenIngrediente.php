@@ -1,7 +1,26 @@
 <?php
-include("../../conectar/conexion.php");
-include('../../controlador/ordenIngredienteController.php');
+require_once __DIR__ . '/../../vendor/autoload.php';
+use Controlador\OrdenIngredienteControlador;
 
+$ctrl = new OrdenIngredienteControlador();
+
+if (isset($_POST['guardar'])) {
+    $ctrl->guardar($_POST);
+}
+if (isset($_POST['modifica'])) {
+    $ctrl->modificar($_POST);
+}
+if (isset($_POST['elimina'])) {
+    $ctrl->eliminar($_POST['idOrden']);
+    $ctrl->eliminar($_POST['idIngrediente']);
+    $ctrl->eliminar($_POST['idProveedor']);
+}
+
+if (isset($_POST['buscar'])) {
+    $ordenes = $ctrl->buscar($_POST['idOrden']);
+} else {
+    $ordenes = $ctrl->listar();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -20,126 +39,117 @@ include('../../controlador/ordenIngredienteController.php');
 <body>
     <main id="mainadmin">
 
-        <div class="modal fade" id="Ordenar" name="" data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="" style="color: Black;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form action="" class="" method="post">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Ordenes de ingrediente</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body row g-3">
+<!-- Modal: Agregar Orden de Ingrediente -->
+<div class="modal fade" id="Ordenar" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalOrdenarLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="color: black;">
+      <form action="" method="post">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalOrdenarLabel">Órdenes de ingrediente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body row g-3">
+          <div class="col-md-6">
+            <label for="idOrden" class="form-label">Id Orden</label>
+            <input type="number" name="idOrden" id="idOrden" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label for="idIngrediente" class="form-label">Id ingrediente</label>
+            <input type="text" name="idIngrediente" id="idIngrediente" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label for="CantidadSolicitada" class="form-label">Cantidad solicitada</label>
+            <input type="number" name="CantidadSolicitada" id="CantidadSolicitada" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label for="idProveedor" class="form-label">Id proveedor</label>
+            <input type="number" name="idProveedor" id="idProveedor" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label for="CantidadComprada" class="form-label">Cantidad comprada</label>
+            <input type="number" name="CantidadComprada" id="CantidadComprada" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer" style="color: black;">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" name="guardar" class="btn btn-primary">Aceptar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
-                            <div class="col-md-6">
-                                <label for="inputAddress" class="form-label">Id Orden</label>
-                                <input type="number" name="idOrden" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputAddress2" class="form-label">Id ingrediente</label>
-                                <input type="text" name="idIngrediente" id="" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputPassword4" class="form-label">Cantidad solicitada</label>
-                                <input type="number" name="CantidadSolicitada" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputPassword4" class="form-label">Id proveedor</label>
-                                <input type="number" name="idProveedor" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputPassword4" class="form-label">Cantidad comprada</label>
-                                <input type="number" name="CantidadComprada" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputPassword4" class="form-label">Fecha compra</label>
-                                <input type="date" name="FechaCompra" class="form-control">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                            <button type="submit" name="guardar" class="btn btn-primary">Aceptar</button>
-                        </div>
-                </div>
-                </form>
-            </div>
+<!-- Modal: Editar Orden de Ingrediente -->
+<div class="modal fade" id="editar" data-bs-keyboard="false" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" style="color: black;">
+      <form action="" method="post">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditarLabel">Modificar orden de ingrediente</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
+        <div class="modal-body row g-3">
+          <div class="col-md-6">
+            <label for="edit_idOrden" class="form-label">Id Orden</label>
+            <input type="number" name="idOrden" id="edit_idOrden" class="form-control" readonly>
+          </div>
+          <div class="col-md-6">
+            <label for="edit_idIngrediente" class="form-label">Id ingrediente</label>
+            <input type="text" name="idIngrediente" id="edit_idIngrediente" class="form-control" readonly>
+          </div>
+          <div class="col-md-6">
+            <label for="edit_CantidadSolicitada" class="form-label">Cantidad solicitada</label>
+            <input type="number" name="CantidadSolicitada" id="edit_CantidadSolicitada" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label for="edit_idProveedor" class="form-label">Id proveedor</label>
+            <input type="number" name="idProveedor" id="edit_idProveedor" class="form-control" readonly>
+          </div>
+          <div class="col-md-6">
+            <label for="edit_CantidadComprada" class="form-label">Cantidad comprada</label>
+            <input type="number" name="CantidadComprada" id="edit_CantidadComprada" class="form-control" required>
+          </div>
+        </div>
+        <div class="modal-footer" style="color: black;">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" name="modifica" class="btn btn-primary">Modificar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 
-
-        <!-- modal editar-->
-        <div class="modal fade" id="editar" name="" data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="" style="color: Black;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form action="" class="" method="post">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="staticBackdropLabel">Modificar</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body row g-3">
-                            <div class="col-md-6">
-                                <label for="inputAddress" class="form-label">Id Orden</label>
-                                <input type="number" name="idOrden" id="idOrden" class="form-control" readonly>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputAddress2" class="form-label">Id ingrediente</label>
-                                <input type="text" name="idIngrediente" id="idIngrediente" class="form-control"  readonly>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputPassword4" class="form-label">Cantidad solicitada</label>
-                                <input type="number" name="CantidadSolicitada" id="CantidadSolicitada" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputPassword4" class="form-label">Id proveedor</label>
-                                <input type="number" name="idProveedor" id="idProveedor" class="form-control"  readonly>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputPassword4" class="form-label">Cantidad comprada</label>
-                                <input type="number" name="CantidadComprada" id="CantidadComprada" class="form-control">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputPassword4" class="form-label">Fecha compra</label>
-                                <input type="date" name="FechaCompra" id="FechaCompra" class="form-control">
-                            </div>
-                        </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" href="UsuarioAdmin.php" name="modifica" class="btn btn-primary">modificar</button>
-                </div>
-            </div>
-            </form>
+<!-- Modal: Confirmar Eliminacion -->
+<div class="modal fade" id="botoneliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form action="" method="post">
+      <div class="modal-content" style="color: black;">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEliminarLabel">Confirmar Eliminación</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
+        <div class="modal-body">
+          <div class="col-12">
+            <label for="idOrden1" class="form-label">Id orden</label>
+            <input type="text" name="idOrden" id="idOrden1" class="form-control" readonly>
+          </div>
+          <div class="col-12">
+            <label for="idIngrediente1" class="form-label">Id ingrediente</label>
+            <input type="text" name="idIngrediente" id="idIngrediente1" class="form-control" readonly>
+          </div>
+          <div class="col-12">
+            <label for="idProveedor1" class="form-label">Id proveedor</label>
+            <input type="number" name="idProveedor" id="idProveedor1" class="form-control" readonly>
+          </div>
         </div>
-        <!-- Modal -->
-        <div class="modal fade" class="botone" id="botoneliminar" name="Eliminar1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <form action="" method="post">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel" style="color:black">Confirmar Eliminacion</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body" style="color: black;">
-                            <div class="col-12">
-                                <label for="inputAddress" class="form-label">Id orden</label>
-                                <input type="text" name="idOrden" id="idOrden1" class="form-control">
-                            </div>
-                            <div class="col-12">
-                                <label for="inputAddress" class="form-label">Id ingrediente</label>
-                                <input type="text" name="idIngrediente" id="idIngrediente1" class="form-control">
-                            </div>
-                            <div class="col-12">
-                                <label for="inputAddress" class="form-label">Id proveedor</label>
-                                <input type="number" name="idProveedor" id="idProveedor1" class="form-control">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" name="elimina" class="btn btn-danger">Confirmar</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
+        <div class="modal-footer" style="color: black;">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="submit" name="elimina" class="btn btn-danger">Confirmar</button>
         </div>
+      </div>
+    </form>
+  </div>
+</div>
 
         <div class="container-md bg-light mt-5 py-4 px-4" style="width:1100px; ">
 
@@ -175,78 +185,32 @@ include('../../controlador/ordenIngredienteController.php');
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    $GAU = 1;
-                    if ($res == 0) {
-                        echo "No hay registros";
-                    } else {
-                        do {
-                    ?>
+                    <?php if (!empty($ordenes)): ?>
+                        <?php foreach ($ordenes as $row): ?>
                             <tr>
-
-
-
-                                <td><?php echo $res[0] ?></td>
-                                <td><?php echo $res[1] ?></td>
-                                <td><?php echo $res[2] ?></td>
-                                <td><?php echo $res[3] ?></td>
-                                <td><?php echo $res[4] ?></td>
-                                <td><?php echo $res[5] ?></td>
-
-
+                                <td><?= htmlspecialchars($row['idOrden']) ?></td>
+                                <td><?= htmlspecialchars($row['idIngrediente']) ?></td>
+                                <td><?= htmlspecialchars($row['CantidadSolicitada']) ?></td>
+                                <td><?= htmlspecialchars($row['idProveedor']) ?></td>
+                                <td><?= htmlspecialchars($row['CantidadComprada']) ?></td>
+                                <td><?= htmlspecialchars($row['created_at']) ?></td>
                                 <td>
-                                    <form class="d-flex  justify-content-center align-items-center" action="" method="post">
+                                    <!-- Botones de editar/eliminar: puedes hacerlos funcionar con modals y JS -->
+                                    <form class="d-flex justify-content-center align-items-center" action="" method="post">
                                         <button type="button" class="btn btn-sm btn-danger elimin"><i class="fa-solid fa-trash"></i></button>
-                                        <buttom type="button" class="btn btn-sm btn-primary boton editM " style="color:black;"><i class="fa-solid fa-pen-to-square"></i></buttom>
+                                        <button type="button" class="btn btn-sm btn-primary editM" style="color:black;"><i class="fa-solid fa-pen-to-square"></i></button>
                                     </form>
                                 </td>
-
                             </tr>
-
-                    <?php
-                        } while ($res = mysqli_fetch_array($ejecuta));
-                    }
-
-
-                    ?>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="7">No hay registros</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <?php
-                    if ($pagina != 1) {
-                    ?>
-                        <li class="page-item ">
-                            <a class="page-link" href="?pagina=<?php echo 1; ?>">
-                                <<< /a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?pagina=<?php echo $pagina - 1; ?>">
-                                << /a>
-                        </li>
-                    <?php
-                    }
-                    for ($i = 1; $i <= $totalPaginas; $i++) {
-                        if ($i == $pagina) {
-                            echo '<li class="page-item active" aria-current="page"><a class="page-link" href="?pagina=' . $i . '">' . $i . '</a></li>';
-                        } else {
-                            echo '<li class="page-item "><a class="page-link" href="?pagina=' . $i . '">' . $i . '</a></li>';
-                        }
-                    }
-                    if ($pagina != $totalPaginas) {
-                    ?>
-
-                        <li class="page-item">
-                            <a class="page-link" href="?pagina=<?php echo $pagina + 1; ?>">></a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?pagina=<?php echo $totalPaginas; ?>">>></a>
-                        </li>
-                    <?php
-                    }
-                    ?>
-                </ul>
-            </nav>
+            
         </div>
 
     </main>
@@ -269,13 +233,11 @@ include('../../controlador/ordenIngredienteController.php');
                 return $(this).text();
             }).get();
             console.log(data);
-            $('#CantidadSolicitada').val(data[2]);
-            $('#CantidadComprada').val(data[4]);
-            $('#FechaCompra').val(data[5]);
-
-
-
-
+            $('#edit_idOrden').val(data[0]);
+            $('#edit_idIngrediente').val(data[1]);
+            $('#edit_CantidadSolicitada').val(data[2]);
+            $('#edit_idProveedor').val(data[3]);
+            $('#edit_CantidadComprada').val(data[4]);
         });
 
         $('.elimin').on('click', function() {
@@ -288,7 +250,6 @@ include('../../controlador/ordenIngredienteController.php');
             $('#idOrden1').val(data[0]);
             $('#idIngrediente1').val(data[1]);
             $('#idProveedor1').val(data[3]);
-
 
         });
 

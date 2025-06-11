@@ -1,60 +1,60 @@
 <?php
-include_once __DIR__ . '/../modelar/ordenCompraModelo.php';
-include_once __DIR__ . '/../conectar/conexion.php';
-use conectar\Conexion;
+namespace Controlador;
+
 use modelar\OrdenDeCompra;
+use conectar\Conexion;
 
-$obj = new OrdenDeCompra();
+class OrdenCompraControlador {
+    public $model;
 
-if(isset($_POST['guardar'])){
-    $obj->idOrden = $_POST['idOrden'];
-    $obj->fechaPedido = $_POST['FechaPedido']; // usa minúscula inicial
-    $obj->usuarioDocumento = $_POST['UsuarioDocumento']; // usa minúscula inicial
-    $obj->agregar();
-}
+    public function __construct()
+    {
+        $this->model = new OrdenDeCompra();
+    }
+    public function guardar($data) {
+        $this->model->idOrden = $data['idOrden'];
+        $this->model->fechaPedido = $data['FechaPedido'];
+        $this->model->usuarioDocumento = $data['UsuarioDocumento'];
+        $this->model->agregar();
+    }
 
-if(isset($_POST['modifica'])){
-    $obj->idOrden = $_POST['idOrden'];
-    $obj->fechaPedido = $_POST['FechaPedido'];
-    $obj->usuarioDocumento = $_POST['UsuarioDocumento'];
-    $obj->modificar();
-}
+    public function modificar($data) {
+        $this->model->idOrden = $data['idOrden'];
+        $this->model->fechaPedido = $data['FechaPedido'];
+        $this->model->usuarioDocumento = $data['UsuarioDocumento'];
+        $this->model->modificar();
+    }
 
-if(isset($_POST['elimina'])){
-    $obj->idOrden = $_POST['idOrden'];
-    $obj->eliminar();
-}
+    public function eliminar($idOrden) {
+        $this->model->idOrden = $idOrden;
+        $this->model->eliminar();
+    }
 
-$cone  = new Conexion();
-$c = $cone->conectando();
-$sql1 = "SELECT COUNT(*) as totalRegistro FROM ordendecompra";
-$ejecuta1 = mysqli_query($c, $sql1);
-$res1 = mysqli_fetch_array($ejecuta1);
-$totalRegistros = $res1['totalRegistro'];
-$maximoRegistros = 6;
-if (empty($_GET['pagina'])) {
-    $pagina = 1;
-} else {
-    $pagina = $_GET['pagina'];
-}
-$desde = ($pagina-1) * $maximoRegistros;
-$totalPaginas = ceil($totalRegistros / $maximoRegistros);
+    public function buscar($idOrden) {
+        $cone = new Conexion();
+        $c = $cone->conectando();
+        $stmt = $c->prepare("SELECT * FROM ordendecompra WHERE idOrden LIKE ?");
+        $search = "%{$idOrden}%";
+        $stmt->bind_param("s", $search);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_array();
+        $stmt->close();
+        return $res;
+    }
 
-if(isset($_POST['buscar'])){
-    $obj->idOrden = $_POST['idOrden'];
-
-    // Consulta preparada para buscar seguro
-    $sql2 = "SELECT * FROM ordendecompra WHERE idOrden LIKE ? LIMIT ?, ?";
-    $stmt = $c->prepare($sql2);
-    $likeIdOrden = "%" . $obj->idOrden . "%";
-    $stmt->bind_param("sii", $likeIdOrden, $desde, $maximoRegistros);
-    $stmt->execute();
-    $ejecuta = $stmt->get_result();
-    $res = $ejecuta->fetch_array();
-    $stmt->close();
-} else {
-    $sql2 = "SELECT * FROM ordendecompra LIMIT $desde, $maximoRegistros";
-    $ejecuta = mysqli_query($c, $sql2);
-    $res = mysqli_fetch_array($ejecuta);
+    public function listar($desde = null, $maximoRegistros = null) {
+        $cone = new Conexion();
+        $c = $cone->conectando();
+        $sql2 = "SELECT * FROM ordendecompra";
+        if ($desde !== null && $maximoRegistros !== null) {
+            $sql2 .= " LIMIT $desde, $maximoRegistros";
+        }
+        $ejecuta = mysqli_query($c, $sql2);
+        $datos = [];
+        while ($row = mysqli_fetch_assoc($ejecuta)) {
+            $datos[] = $row;
+        }
+        return $datos;
+    }
 }
 ?>

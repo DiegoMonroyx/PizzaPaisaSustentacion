@@ -1,7 +1,21 @@
 <?php
-  include("../../conectar/conexion.php");
-  include("../../controlador/tipoDocumentoController.php");
+require_once __DIR__ . '/../../vendor/autoload.php';
 
+use Controlador\TipoDocumentoControlador;
+
+$ctrl = new TipoDocumentoControlador();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['modifica'])) {
+        $ctrl->modificar($_POST);
+    }
+}
+
+if (isset($_POST['buscar']) && !empty($_POST['idTipoDocumento'])) {
+    $datos = $ctrl->buscar($_POST['idTipoDocumento']);
+} else {
+    $datos = $ctrl->listar();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -18,63 +32,63 @@
   </head>
   <body>
     <div style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
-      <table class="table table-bordered border-1 border--bs-secondary-color table-hover bg-light" id="tabla" style="width: 60%; border-radius: 10px; overflow: hidden;">
-          <thead class="border-1 border-dark" id="succes" style="background-color: #239227;">
-              <tr style="color: white">
-                <th scope="col">id</th>
-                <th scope="col" style="text-align: center;">Tipo de Documento</th>
-              </tr>
-          </thead>
-          <tbody class="table-group-divider">
-              <?php
-              $GAU = 1;
-              if ($res == 0) {
-                  echo "<tr><td colspan='2' style='text-align: center;'>No hay registros</td></tr>";
-              } else {
-                  do {
-                      ?>
-                      <tr>
-                          <td><?php echo $res[0]; ?></td>
-                          <td style="display: flex; justify-content: space-between; align-items: center;">
-                              <span><?php echo $res[1]; ?></span>
-                              <form class="d-flex justify-content-center align-items-center" action="" method="post">
-                                  <button type="button" class="btn btn-sm btn-primary boton editM" style="color: black;"><i class="fa-solid fa-pen-to-square"></i></button>
-                              </form>
-                          </td>
-                      </tr>
-                      <div class="modal fade" id="editar" name="" data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="" style="color: Black;">
-                          <div class="modal-dialog">
-                              <div class="modal-content">
-                                  <form action="" class="" method="post">
-                                      <div class="modal-header">
-                                          <h5 class="modal-title" id="staticBackdropLabel">Modificar</h5>
-                                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                      </div>
-                                      <div class="modal-body row g-3">
-                                          <div class="col-md-6">
-                                              <label for="inputAddress2" class="form-label">Id Tipo Documento</label>
-                                              <input type="number" name="idTipoDocumento" id="idTipoDocumento" class="form-control" placeholder="" readonly>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <label for="inputPassword4" class="form-label">Tipo de documento</label>
-                                              <input type="text" name="tipoDocumento" id="tipoDocumento" class="form-control">
-                                          </div>
-                                      </div>
-                                      <div class="modal-footer">
-                                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                          <button type="submit" href="UsuarioAdmin.php" name="modifica" class="btn btn-success">Modificar</button>
-                                      </div>
-                                  </form>
-                              </div>
-                          </div>
-                      </div>
-                      <?php
-                  } while ($res = mysqli_fetch_array($ejecuta));
-              }
-              ?>
-          </tbody>
-      </table>
+    <div style="width: 60%;">
+        <form action="" method="post" class="mb-3 d-flex">
+            <input type="text" class="form-control me-2" name="idTipoDocumento" placeholder="Buscar por ID">
+            <button class="btn btn-outline-success" name="buscar" type="submit">Buscar</button>
+        </form>
+        <table class="table table-bordered border-1 border--bs-secondary-color table-hover bg-light" id="tabla" style="border-radius: 10px; overflow: hidden;">
+            <thead class="border-1 border-dark" id="succes" style="background-color: #239227;">
+                <tr style="color: white">
+                    <th scope="col">ID</th>
+                    <th scope="col" style="text-align: center;">Tipo de Documento</th>
+                    <th scope="col">Acción</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <?php if (empty($datos)): ?>
+                    <tr><td colspan="3" style="text-align: center;">No hay registros</td></tr>
+                <?php else: ?>
+                    <?php foreach ($datos as $row): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['idTipoDocumento']) ?></td>
+                            <td><?= htmlspecialchars($row['tipoDocumento']) ?></td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-primary editM" style="color:black;"><i class="fa-solid fa-pen-to-square"></i></button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
+</div>
+
+<!-- Modal Editar -->
+<div class="modal fade" id="editar" tabindex="-1" aria-labelledby="editarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="" method="post" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editarLabel">Modificar</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body row g-3">
+                <div class="col-md-6">
+                    <label class="form-label">Id Tipo Documento</label>
+                    <input type="number" name="idTipoDocumento" id="idTipoDocumento" class="form-control" readonly>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Tipo de documento</label>
+                    <input type="text" name="tipoDocumento" id="tipoDocumento" class="form-control">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" name="modifica" class="btn btn-success">Modificar</button>
+            </div>
+        </form>
+    </div>
+</div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     
   </body>
@@ -93,18 +107,6 @@
 
     });
 
-
-
-
-
-
-
-
-
   </script>
-
-
-
-
 
 </html>

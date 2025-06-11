@@ -1,41 +1,56 @@
 <?php
-include_once __DIR__ . '/../modelar/IngredienteModelo.php';
-include_once __DIR__ . '/../conectar/conexion.php';
-use conectar\Conexion;
+namespace Controlador;
+
 use modelar\Ingrediente;
-$obj = new Ingrediente();
+use conectar\Conexion;
 
-if(isset($_POST['guardar'])){
-    $obj->idIngrediente = $_POST['idIngrediente'];
-    $obj->Descripcion = $_POST['Descripcion'];
-    $obj->Existenciaskg = $_POST['Existenciaskg'];
-    $obj->agregar();
-}
-if(isset($_POST['modifica'])){
-    $obj->idIngrediente = $_POST['idIngrediente'];
-    $obj->Descripcion = $_POST['Descripcion'];
-    $obj->Existenciaskg = $_POST['Existenciaskg'];
-    $obj->modificar();
-}
-if(isset($_POST['elimina'])){
-    $obj->idIngrediente = $_POST['idIngrediente'];
-    $obj->eliminar();
-}
-$cone  = new Conexion();
-$c = $cone->conectando();
+class IngredienteControlador {
+    public $model;
 
-if(isset($_POST['buscar'])){
-    $obj->idIngrediente = $_POST['idIngrediente'];
-    // Usar consulta preparada para evitar SQL Injection
-    $stmt = $c->prepare("SELECT * FROM ingrediente WHERE idIngrediente LIKE ?");
-    $search = "%{$obj->idIngrediente}%";
-    $stmt->bind_param("s", $search);
-    $stmt->execute();
-    $res = $stmt->get_result()->fetch_array();
-    $stmt->close();
-} else {
+    public function __construct()
+    {
+        $this->model = new Ingrediente();
+    }
+    public function guardar($data) {
+        $this->model->idIngrediente = $data['idIngrediente'];
+        $this->model->descripcion   = $data['Descripcion'];
+        $this->model->existenciaskg = $data['Existenciaskg'];
+        $this->model->agregar();
+    }
+
+    public function modificar($data) {
+        $this->model->idIngrediente = $data['idIngrediente'];
+        $this->model->descripcion   = $data['Descripcion'];
+        $this->model->existenciaskg = $data['Existenciaskg'];
+        $this->model->modificar();
+    }
+
+    public function eliminar($id) {
+        $this->model->idIngrediente = $id;
+        $this->model->eliminar();
+    }
+
+    public function buscar($id) {
+        $cone = new Conexion();
+        $c = $cone->conectando();
+        $stmt = $c->prepare("SELECT * FROM ingrediente WHERE idIngrediente LIKE ?");
+        $search = "%{$id}%";
+        $stmt->bind_param("s", $search);
+        $stmt->execute();
+        $res = $stmt->get_result()->fetch_array();
+        $stmt->close();
+        return $res;
+    }
+
+    public function listar() {
+    $cone = new Conexion();
+    $c = $cone->conectando();
     $sql2 = "SELECT * FROM ingrediente";
     $ejecuta = mysqli_query($c, $sql2);
-    $res = mysqli_fetch_array($ejecuta);
+    $datos = [];
+    while ($row = mysqli_fetch_assoc($ejecuta)) {
+        $datos[] = $row; // Cada $row es un array asociativo
+    }
+    return $datos; // Devuelve un array de arrays
 }
-?>
+}

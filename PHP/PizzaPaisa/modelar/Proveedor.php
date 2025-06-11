@@ -1,15 +1,17 @@
 <?php
 namespace modelar;
-include_once __DIR__ . '/../conectar/conexion.php';
 use conectar\Conexion;
-class proveedor {
+
+class Proveedor
+{
     public $barrio;
     public $direccion;
     public $idProveedor;
     public $nombreProveedor;
     public $numeroTelefono;
 
-    public function agregar() {
+    public function agregar()
+    {
         $conet = new Conexion();
         $c = $conet->conectando();
         $query = "SELECT * FROM proveedor WHERE idProveedor = ?";
@@ -18,9 +20,9 @@ class proveedor {
         $stmt->execute();
         $ejecuta = $stmt->get_result();
         if ($ejecuta && $ejecuta->fetch_array()) {
-            echo '<script>Swal.fire({position: "top", icon: "info", title: "El Registro ya Existe en el Sistema", showConfirmButton: false, timer: 3000});</script>';
+            echo '<script>Swal.fire({position: "top", icon: "info", title: "El proveedor ya existe en el sistema", showConfirmButton: false, timer: 3000});</script>';
         } else {
-            $insertar = "INSERT INTO proveedor (idProveedor, nombreProveedor, numeroTelefono, direccion, barrio) VALUES (?, ?, ?, ?, ?)";
+            $insertar = "INSERT INTO proveedor (idProveedor, NombreProveedor, NumeroTelefono, direccion, barrio) VALUES (?, ?, ?, ?, ?)";
             $stmt_insert = $c->prepare($insertar);
             $stmt_insert->bind_param(
                 "issss",
@@ -31,16 +33,17 @@ class proveedor {
                 $this->barrio
             );
             if ($stmt_insert->execute()) {
-                echo '<script>Swal.fire({position: "top", icon: "success", title: "El Registro Fue Agregado en el Sistema", showConfirmButton: false, timer: 3000});</script>';
+                echo '<script>Swal.fire({position: "top", icon: "success", title: "Proveedor agregado correctamente", showConfirmButton: false, timer: 3000});</script>';
             } else {
-                echo '<script>Swal.fire({position: "top", icon: "error", title: "Error agregando el registro", showConfirmButton: false, timer: 3000});</script>';
+                echo '<script>Swal.fire({position: "top", icon: "error", title: "Error agregando el proveedor", showConfirmButton: false, timer: 3000});</script>';
             }
             $stmt_insert->close();
         }
         $stmt->close();
     }
 
-    public function modificar() {
+    public function modificar()
+    {
         $c = new Conexion();
         $cone = $c->conectando();
         $sql = "SELECT * FROM proveedor WHERE idProveedor = ?";
@@ -52,8 +55,8 @@ class proveedor {
             echo "<script> alert('El proveedor no existe en el sistema')</script>";
         } else {
             $id = "UPDATE proveedor SET 
-                nombreProveedor = ?, 
-                numeroTelefono = ?, 
+                NombreProveedor = ?, 
+                NumeroTelefono = ?, 
                 direccion = ?, 
                 barrio = ? 
                 WHERE idProveedor = ?";
@@ -67,16 +70,17 @@ class proveedor {
                 $this->idProveedor
             );
             if ($stmt_update->execute()) {
-                echo '<script>Swal.fire({position: "top", icon: "success", title: "El Registro fue Actualizado en el Sistema", showConfirmButton: false, timer: 3000});</script>';
+                echo '<script>Swal.fire({position: "top", icon: "success", title: "Proveedor actualizado correctamente", showConfirmButton: false, timer: 3000});</script>';
             } else {
-                echo '<script>Swal.fire({position: "top", icon: "error", title: "Error actualizando el registro", showConfirmButton: false, timer: 3000});</script>';
+                echo '<script>Swal.fire({position: "top", icon: "error", title: "Error actualizando el proveedor", showConfirmButton: false, timer: 3000});</script>';
             }
             $stmt_update->close();
         }
         $stmt->close();
     }
 
-    public function eliminar() {
+    public function eliminar()
+    {
         try {
             $c = new Conexion();
             $cone = $c->conectando();
@@ -84,14 +88,15 @@ class proveedor {
             $stmt = $cone->prepare($sql);
             $stmt->bind_param("i", $this->idProveedor);
             if ($stmt->execute()) {
-                echo '<script>Swal.fire({position: "top",icon: "success", title: "El Registro Fue Eliminado del Sistema", showConfirmButton: false, timer: 3000});</script>';
+                echo '<script>Swal.fire({position: "top",icon: "success", title: "Proveedor eliminado correctamente", showConfirmButton: false, timer: 3000});</script>';
             } else {
-                echo '<script>Swal.fire({position: "top", icon: "warning", title: "El Registro no se Puede Eliminar Porque Tiene Datos Relacionados", showConfirmButton: false, timer: 3000});</script>';
+                echo '<script>Swal.fire({position: "top", icon: "warning", title: "No se puede eliminar el proveedor porque tiene datos relacionados", showConfirmButton: false, timer: 3000});</script>';
             }
             $stmt->close();
-        } catch (Exception $e) {
-            echo '<script>Swal.fire({position: "top", icon: "warning", title: "El Registro no se Puede Eliminar Porque Tiene Datos Relacionados", showConfirmButton: false, timer: 3000});</script>';
+        } catch (\Exception $e) {
+            echo '<script>Swal.fire({position: "top", icon: "warning", title: "No se puede eliminar el proveedor porque tiene datos relacionados", showConfirmButton: false, timer: 3000});</script>';
         }
     }
 }
-?><script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+?>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

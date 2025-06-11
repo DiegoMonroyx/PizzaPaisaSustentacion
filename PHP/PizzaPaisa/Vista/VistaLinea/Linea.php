@@ -1,9 +1,20 @@
 <?php
-    include("../../conectar/conexion.php");
-    include('../../controlador/LineaControlador.php');
-    
-   
-    ?>
+require_once __DIR__ . '/../../vendor/autoload.php';
+use Controlador\LineaControlador;
+
+$ctrl = new LineaControlador();
+if (isset($_POST['guardar'])) {
+    $ctrl->guardar($_POST);
+}
+if (isset($_POST['modifica'])) {
+    $ctrl->modificar($_POST);
+}
+if (isset($_POST['elimina'])) {
+    $ctrl->eliminar($_POST['idOrden']);
+}
+
+$lineas = $ctrl->listar();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,9 +28,9 @@
     <script src="function.js"></script>
 </head>
 <body>
-    <main id="mainadmin">
     
-      <div class="modal fade" id="Reservar" name=""   data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="" style="color: Black;">
+    <main id="mainadmin">
+        <div class="modal fade" id="Reservar" name=""   data-bs-keyboard="false" tabindex="-1" aria-labelledby="" aria-hidden="" style="color: Black;">
         <div class="modal-dialog">
             <div class="modal-content">
             <form action="" class="" method="post">
@@ -148,143 +159,74 @@
             </button>
            
         </div>
-        
-        <table  class="table border border-1 border-dark rounded-3 bg-light" id="latabla" >
-         <thead class=" " id="succes" style = "background-color: #239227;">
-        <tr style ="color: white;" >
-            
-            <th scope="col">Pedido</th>
-            <th scope="col">idSabor</th>
-            <th scope="col">Pizza</th>
-            <th scope="col">Precio</th>
-            <th scope="col">NumeroPorciones</th>
-            <th scope="col">Documento</th>
-            <th scope="col">Accion</th>
-           
-            
-
-         </tr>
-        </thead>
-        <tbody>
-            <?php
-                $GAU = 1;
-                if($res == 0){
-                    echo "No hay registros";
-                }else {
-                    do{
-            ?>
-                <tr>
-                
-                
-                <td><?php echo $res[0]?></td>
-                <td><?php echo $res[1]?></td>
-                <td><?php echo $res[2]?></td>
-                <td><?php echo $res[3]?></td>
-                <td><?php echo $res[4]?></td>
-                <td><?php echo $res[5]?></td>
-                
-                <td><form  class="d-flex  justify-content-center align-items-center" action="" method="post">
-                
-                    <button type="button"   class="btn btn-sm btn-danger elimin" ><i class="fa-solid fa-trash"></i></button>
-                    
-                    <buttom type="button" class="btn btn-sm btn-primary boton editM "   style="color:black;" ><i class="fa-solid fa-pen-to-square"></i></buttom>
-                    </form>
-                </td>
-                
-                </tr>
-                
-            <?php
-                    }while($res = mysqli_fetch_array($ejecuta));
-
-                }
-
-         
-            ?>
-        </tbody>
-    </table>
-    <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <?php 
-                    if($pagina!=1){
-                    ?>
-                    <li class="page-item ">
-                        <a class="page-link" href="?pagina=<?php echo 1; ?>"><</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $pagina-1; ?>"><<</a>
-                    </li>
-                    <?php
-                    }
-                    for($i=1; $i<=$totalPaginas; $i++){
-                        if($i==$pagina){
-                            echo'<li class="page-item active" aria-current="page"><a class="page-link" href="?pagina='.$i.'">'.$i.'</a></li>';    
-                        }
-                        else{
-                            echo'<li class="page-item "><a class="page-link" href="?pagina='.$i.'">'.$i.'</a></li>'; 
-                        }
-                    }
-                    if($pagina !=$totalPaginas){
-                    ?>
-                    
-                    <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $pagina+1; ?>">>></a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $totalPaginas; ?>">></a>
-                    </li>
-                    <?php
-                    }
-                    ?>
-                </ul>
-            </nav>
-</div>
-
+            <table class="table border border-1 border-dark rounded-3 bg-light" id="latabla">
+                <thead class="" id="succes" style="background-color: #239227;">
+                    <tr style="color: white;">
+                        <th scope="col">Pedido</th>
+                        <th scope="col">idSabor</th>
+                        <th scope="col">Pizza</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">NumeroPorciones</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Accion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php if (!empty($lineas)): ?>
+                    <?php foreach ($lineas as $row): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($row['idPedido']) ?></td>
+                            <td><?= htmlspecialchars($row['idSabor']) ?></td>
+                            <td><?= htmlspecialchars($row['Nombre_Pizza']) ?></td>
+                            <td><?= htmlspecialchars($row['Precio_Porcion']) ?></td>
+                            <td><?= htmlspecialchars($row['numeroPorciones']) ?></td>
+                            <td><?= htmlspecialchars($row['UsuarioDocumento']) ?></td>
+                            <td>
+                                <form class="d-flex justify-content-center align-items-center" action="" method="post">
+                                    <button type="button" class="btn btn-sm btn-danger elimin"><i class="fa-solid fa-trash"></i></button>
+                                    <button type="button" class="btn btn-sm btn-primary boton editM" style="color:black;"><i class="fa-solid fa-pen-to-square"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td colspan="7">No hay registros</td>
+                    </tr>
+                <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-   
-    
-        
 </body>
 </html>
 <script>
     $(document).ready(function(){
+        $('.editM').on('click', function(){
+            $('#editar').modal('show');
+            $tr = $(this).closest('tr');
+            var data = $tr.children('td').map(function(){
+                return $(this).text();
+            }).get();
+            $('#idPedido').val(data[0]);
+            $('#idSabor').val(data[1]);
+            $('#idSabores').val(data[1]);
+            $('#NumeroPorciones').val(data[4]);
+            $('#PrecioPorcion').val(data[3]);
+            $('#UsuarioDocumento').val(data[5]);
+        });
 
-            $('.editM').on('click', function(){
-                $('#editar').modal('show');
-                $tr = $(this).closest('tr');
-                var data = $tr.children('td').map(function(){
-                return $(this).text();    
-                }).get();
-                console.log(data);
-                $('#idPedido').val(data[0]);
-                $('#idSabor').val(data[1]);
-                $('#idSabores').val(data[1]);
-                $('#NumeroPorciones').val(data[4]);
-                $('#PrecioPorcion').val(data[3]);
-                $('#UsuarioDocumento').val(data[5]);
-                
-    
-
-            });
-
-            $('.elimin').on('click', function(){
+        $('.elimin').on('click', function(){
             $('#botoneliminar').modal('show');
             $tr = $(this).closest('tr');
             var data = $tr.children('td').map(function(){
-            return $(this).text();    
+                return $(this).text();
             }).get();
-            console.log(data);
             $('#idPedido1').val(data[0]);
             $('#idSabor1').val(data[1]);
-
-
         });
-
-        });
-  
-
-        
-
+    });
 </script>

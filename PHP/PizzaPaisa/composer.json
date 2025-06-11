@@ -1,0 +1,17 @@
+{
+    "name": "diegomonroyx/pizzapaisa",
+    "autoload": {
+        "psr-4": {
+            "Controlador\\": "controlador/",
+            "modelar\\": "modelar/",
+            "conectar\\": "conectar/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Diego Monroy",
+            "email": "jmonroymurillo@gmail.com"
+        }
+    ],
+    "require": {}
+}

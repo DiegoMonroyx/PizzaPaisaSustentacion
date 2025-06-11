@@ -1,7 +1,27 @@
 <?php
-    include("../../conectar/conexion.php");
-    include('../../controlador/ordenCompraControlador.php');
-    ?>
+require_once __DIR__ . '/../../vendor/autoload.php';
+use Controlador\OrdenCompraControlador;
+
+$ctrl = new OrdenCompraControlador();
+if (isset($_POST['guardar'])) {
+    $ctrl->guardar($_POST);
+}
+if (isset($_POST['modifica'])) {
+    $ctrl->modificar($_POST);
+}
+if (isset($_POST['elimina'])) {
+    $ctrl->eliminar($_POST['idOrden']);
+}
+if (isset($_POST['buscar'])) {
+    $ordenes = [];
+    $res = $ctrl->buscar($_POST['idOrden']);
+    if ($res) {
+        $ordenes[] = $res;
+    }
+} else {
+    $ordenes = $ctrl->listar();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -147,75 +167,28 @@
          </tr>
         </thead>
         <tbody>
-            <?php
-                $GAU = 1;
-                if($res == 0){
-                    echo "No hay registros";
-                }else {
-                    do{
-            ?>
+            <?php if (!empty($ordenes)): ?>
+                <?php foreach ($ordenes as $row): ?>
                 <tr>
-                
-                
-                <td><?php echo $res[0]?></td>
-                <td><?php echo $res[1]?></td>
-                <td><?php echo $res[2]?></td>
-                
-                
-                <td><form  class="d-flex  justify-content-center align-items-center" action="" method="post">
-                
-                    <button type="button"   class="btn btn-sm btn-danger elimin" ><i class="fa-solid fa-trash"></i></button>
-                    
-                    <button type="button" class="btn btn-sm btn-primary boton editM "   style="color:black;" ><i class="fa-solid fa-pen-to-square"></i></buttom>
-                    </form>
-                </td>
-                
+                    <td><?= htmlspecialchars($row['idOrden']) ?></td>
+                    <td><?= htmlspecialchars($row['created_at']) ?></td>
+                    <td><?= htmlspecialchars($row['UsuarioDocumento']) ?></td>
+                    <td>
+                        <form class="d-flex justify-content-center align-items-center" action="" method="post">
+                            <button type="button" class="btn btn-sm btn-danger elimin"><i class="fa-solid fa-trash"></i></button>
+                            <button type="button" class="btn btn-sm btn-primary editM" style="color:black;"><i class="fa-solid fa-pen-to-square"></i></button>
+                        </form>
+                    </td>
                 </tr>
-                
-            <?php
-                    }while($res = mysqli_fetch_array($ejecuta));
-
-                }
-
-         
-            ?>
-        </tbody>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="4">No hay registros</td>
+                </tr>
+            <?php endif; ?>
+         </tbody>
     </table>
-    <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <?php 
-                    if($pagina!=1){
-                    ?>
-                    <li class="page-item ">
-                        <a class="page-link" href="?pagina=<?php echo 1; ?>"><</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $pagina-1; ?>"><<</a>
-                    </li>
-                    <?php
-                    }
-                    for($i=1; $i<=$totalPaginas; $i++){
-                        if($i==$pagina){
-                            echo'<li class="page-item active" aria-current="page"><a class="page-link" href="?pagina='.$i.'">'.$i.'</a></li>';    
-                        }
-                        else{
-                            echo'<li class="page-item "><a class="page-link" href="?pagina='.$i.'">'.$i.'</a></li>'; 
-                        }
-                    }
-                    if($pagina !=$totalPaginas){
-                    ?>
-                    
-                    <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $pagina+1; ?>">>></a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="?pagina=<?php echo $totalPaginas; ?>">></a>
-                    </li>
-                    <?php
-                    }
-                    ?>
-                </ul>
-            </nav>
+    
 </div>
 
     </main>
@@ -240,10 +213,6 @@
                 $('#idOrden').val(data[0]);
                 $('#FechaPedido').val(data[1]);
                 $('#UsuarioDocumento').val(data[2]);
-                
-                
-    
-
             });
 
             $('.elimin').on('click', function(){
@@ -254,14 +223,7 @@
             }).get();
             console.log(data);
             $('#idOrden1').val(data[0]);
-            
-
-
         });
 
         });
-  
-
-        
-
 </script>

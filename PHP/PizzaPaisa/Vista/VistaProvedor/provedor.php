@@ -1,7 +1,14 @@
 <?php
-include("../../conectar/conexion.php");
-include('../../controlador/provedorController.php');
+require_once __DIR__ . '/../../vendor/autoload.php';
+use Controlador\ProveedorControlador;
 
+$controlador = new ProveedorControlador();
+
+if (isset($_POST['buscar'])) {
+    $proveedores = $controlador->buscar($_POST['idProveedor'], $desde, $maximoRegistros);
+} else {
+    $proveedores = $controlador->listar();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -27,8 +34,6 @@ include('../../controlador/provedorController.php');
             display: none;
             overflow: auto
         }
-
-
 
         .btn-buscar-actualizado {
             border-radius: 8px;
@@ -183,79 +188,30 @@ include('../../controlador/provedorController.php');
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    $GAU = 1;
-                    if ($res == 0) {
-                        echo "No hay registros";
-                    } else {
-                        do {
-                    ?>
+                    <?php if (empty($proveedores)): ?>
+                        <tr><td colspan="6">No hay registros</td></tr>
+                    <?php else: ?>
+                        <?php foreach ($proveedores as $prov): ?>
                             <tr>
-                                <td><?php echo $res[0] ?></td>
-                                <td><?php echo $res[1] ?></td>
-                                <td><?php echo $res[2] ?></td>
-                                <td><?php echo $res[3] ?></td>
-                                <td><?php echo $res[4] ?></td>
+                                <td><?= htmlspecialchars($prov['idProveedor']) ?></td>
+                                <td><?= htmlspecialchars($prov['NombreProveedor']) ?></td>
+                                <td><?= htmlspecialchars($prov['NumeroTelefono']) ?></td>
+                                <td><?= htmlspecialchars($prov['direccion']) ?></td>
+                                <td><?= htmlspecialchars($prov['Barrio']) ?></td>
                                 <td class="actions-cell">
-                                    <form class="d-flex  justify-content-center align-items-center" action="" method="post">
-                                        <button type="button" class="btn btn-sm btn-danger elimin"><i class="fa-solid fa-trash"></i></button>
-                                        <button type="button" class="btn btn-sm btn-primary boton editM top-border-green" style="color:black;"><i class="fa-solid fa-pen-to-square"></i></button>
-                                    </form>
+                                    <button type="button" class="btn btn-sm btn-danger elimin"><i class="fa-solid fa-trash"></i></button>
+                                    <button type="button" class="btn btn-sm btn-primary editM" style="color:black;"><i class="fa-solid fa-pen-to-square"></i></button>
                                 </td>
                             </tr>
-                    <?php
-                        } while ($res = mysqli_fetch_array($ejecuta));
-                    }
-                    ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
             </table>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <?php
-                    if ($pagina != 1) {
-                    ?>
-                        <li class="page-item ">
-                            <a class="page-link" href="?pagina=<?php echo 1; ?>">
-                                <
-                                    </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?pagina=<?php echo $pagina - 1; ?>">
-                                <<
-                                    </a>
-                        </li>
-                    <?php
-                    }
-                    for ($i = 1; $i <= $totalPaginas; $i++) {
-                        if ($i == $pagina) {
-                            echo '<li class="page-item active" aria-current="page"><a class="page-link" href="?pagina=' . $i . '">' . $i . '</a></li>';
-                        } else {
-                            echo '<li class="page-item "><a class="page-link" href="?pagina=' . $i . '">' . $i . '</a></li>';
-                        }
-                    }
-                    if ($pagina != $totalPaginas) {
-                    ?>
-
-                        <li class="page-item">
-                            <a class="page-link" href="?pagina=<?php echo $pagina + 1; ?>">>></a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?pagina=<?php echo $totalPaginas; ?>">></a>
-                        </li>
-                    <?php
-                    }
-                    ?>
-                </ul>
-            </nav>
         </div>
     </article>
 
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-    <footer class="container-fluid d-flex justify-content-center align-items-center" style="background-color: #239227;  height: 50px; margin-top: auto; ">
-        <p class="pt-3" style="color: white; font-weight: bold;">@La mejor pizza de pais</p>
-    </footer>
 
 </body>
 
