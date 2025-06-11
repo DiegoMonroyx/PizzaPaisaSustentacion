@@ -16,7 +16,7 @@ class TipoUsuarioControlador
     public function modificar($data)
     {
         $this->model->idTipoUsuario = $data['idTipoUsuario'];
-        $this->model->tipoUsuario   = $data['tipoUsuario'];
+        $this->model->tipoUsuario = $data['tipoUsuario'];
         $this->model->modificar();
     }
 
@@ -30,7 +30,7 @@ class TipoUsuarioControlador
         $stmt->execute();
         $result = $stmt->get_result();
         $datos = [];
-        while ($row = $result->fetch_assoc()){
+        while ($row = $result->fetch_assoc()) {
             $datos[] = $row;
         }
         $stmt->close();

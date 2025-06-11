@@ -16,7 +16,7 @@ class TipoDocumentoControlador
     public function modificar($data)
     {
         $this->model->idTipoDocumento = $data['idTipoDocumento'];
-        $this->model->tipoDocumento   = $data['tipoDocumento'];
+        $this->model->tipoDocumento = $data['tipoDocumento'];
         $this->model->modificar();
     }
 
@@ -30,7 +30,7 @@ class TipoDocumentoControlador
         $stmt->execute();
         $result = $stmt->get_result();
         $datos = [];
-        while ($row = $result->fetch_assoc()){ 
+        while ($row = $result->fetch_assoc()) {
             $datos[] = $row;
         }
         $stmt->close();
@@ -43,7 +43,7 @@ class TipoDocumentoControlador
         $sql = "SELECT * FROM tipodocumento";
         $res = $c->query($sql);
         $datos = [];
-        while ($row = $res->fetch_assoc()){ 
+        while ($row = $res->fetch_assoc()) {
             $datos[] = $row;
         }
         return $datos;

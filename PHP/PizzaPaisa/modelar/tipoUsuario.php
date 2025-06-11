@@ -1,6 +1,5 @@
 <?php
 namespace modelar;
-
 use conectar\Conexion;
 
 class TipoUsuario
@@ -11,13 +10,11 @@ class TipoUsuario
     public function modificar()
     {
         $c = (new Conexion())->conectando();
-
         $sql = "SELECT * FROM tipousuario WHERE idTipoUsuario = ?";
         $stmt = $c->prepare($sql);
         $stmt->bind_param("s", $this->idTipoUsuario);
         $stmt->execute();
         $r = $stmt->get_result();
-
         if (!$r->fetch_array()) {
             echo "<script> alert('No se puede modificar el tipo de usuario') </script>";
         } else {
@@ -26,7 +23,6 @@ class TipoUsuario
             $stmt_update->bind_param("ss", $this->tipoUsuario, $this->idTipoUsuario);
             $stmt_update->execute();
             $stmt_update->close();
-
             echo '<script> Swal.fire({
                 position: "top",
                 icon: "success",
@@ -48,7 +44,7 @@ class TipoUsuario
         $stmt->execute();
         $result = $stmt->get_result();
         $datos = [];
-        while ($row = $result->fetch_assoc()){ 
+        while ($row = $result->fetch_assoc()){
             $datos[] = $row;
         }
         $stmt->close();
@@ -61,7 +57,7 @@ class TipoUsuario
         $sql = "SELECT * FROM tipousuario";
         $res = $c->query($sql);
         $datos = [];
-        while ($row = $res->fetch_assoc()){ 
+        while ($row = $res->fetch_assoc()){
             $datos[] = $row;
         }
         return $datos;
