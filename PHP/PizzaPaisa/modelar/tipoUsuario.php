@@ -1,12 +1,10 @@
 <?php
 namespace modelar;
 use conectar\Conexion;
-
 class TipoUsuario
 {
     public $idTipoUsuario;
     public $tipoUsuario;
-
     public function modificar()
     {
         $c = (new Conexion())->conectando();
@@ -33,7 +31,6 @@ class TipoUsuario
         }
         $stmt->close();
     }
-
     public function buscar($idTipoUsuario)
     {
         $c = (new Conexion())->conectando();
@@ -50,7 +47,6 @@ class TipoUsuario
         $stmt->close();
         return $datos;
     }
-
     public function listar()
     {
         $c = (new Conexion())->conectando();
