@@ -20,7 +20,7 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-    'https://20.55.34.81:4200'
+    '*'
     ],
 
     'allowed_headers' => ['*'],
