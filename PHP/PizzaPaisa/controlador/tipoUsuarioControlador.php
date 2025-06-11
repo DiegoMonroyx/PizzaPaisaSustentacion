@@ -17,29 +17,10 @@ class TipoUsuarioControlador
     }
     public function buscar($idTipoUsuario)
     {
-        $c = (new Conexion())->conectando();
-        $sql = "SELECT * FROM tipousuario WHERE idTipoUsuario LIKE ?";
-        $stmt = $c->prepare($sql);
-        $like = "%$idTipoUsuario%";
-        $stmt->bind_param("s", $like);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $datos = [];
-        while ($row = $result->fetch_assoc()) {
-            $datos[] = $row;
-        }
-        $stmt->close();
-        return $datos;
+        return $this->model->buscar($idTipoUsuario);
     }
     public function listar()
     {
-        $c = (new Conexion())->conectando();
-        $sql = "SELECT * FROM tipousuario";
-        $res = $c->query($sql);
-        $datos = [];
-        while ($row = $res->fetch_assoc()) {
-            $datos[] = $row;
-        }
-        return $datos;
+        return $this->model->listar();
     }
 }
