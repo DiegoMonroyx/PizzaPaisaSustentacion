@@ -183,7 +183,7 @@ export class ReservaComponent implements OnInit {
           });
           // Enviamos cada línea de pedido
           this.resumenPedido.pizzas!.forEach((item: any) =>
-            this.http.post(`${environment.apiUrl}/api/linea`, item).subscribe()
+            this.http.post(`${environment.apiUrl}/linea`, item).subscribe()
           );
         },
         error: err => {

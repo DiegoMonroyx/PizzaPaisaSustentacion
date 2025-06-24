@@ -26,9 +26,8 @@ $reservas = $ctrl->listar();
     <title>Elcrud</title>
     <link rel="stylesheet" href="../../Config/css/bootstrap.min.css">
     <link rel="stylesheet" href="../estilos.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"
-        integrity="sha256-/3xqD3d8VQ4C/2uvq/Fo6+4n1jIRp82oP7XnF6SlQxA="
-        crossorigin="anonymous"></script>
+    <!-- SweetAlert2 SIN integrity ni crossorigin -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJ+Y3ZZo2Xsn3b52bQyGQmGhZgJ1J4b8bBz0I="
         crossorigin="anonymous"></script>
@@ -37,6 +36,7 @@ $reservas = $ctrl->listar();
         integrity="sha384-cVKIphbuKT1zEhlKU6Fa6l5gWQ5l9F2s4l2F5jR8LqjEjh4u57rR1aVt3+0U6bKG"
         crossorigin="anonymous"></script>
 </head>
+
 <body>
     <main id="mainadmin">
         <!-- ... tus modales ... -->
@@ -252,6 +252,12 @@ $reservas = $ctrl->listar();
     </div>
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- Bootstrap JS después -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Tu script de handlers al final, después de todo el HTML -->
 <script>
 $(document).ready(function(){
     // Editar
