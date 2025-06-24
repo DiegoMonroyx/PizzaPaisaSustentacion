@@ -28,7 +28,7 @@ $reservas = $ctrl->listar();
     <link rel="stylesheet" href="../estilos.css">
     <script src="function.js"></script>
     <!-- SweetAlert2 SIN integrity ni crossorigin -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>-->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJ+Y3ZZo2Xsn3b52bQyGQmGhZgJ1J4b8bBz0I="
         crossorigin="anonymous"></script>
