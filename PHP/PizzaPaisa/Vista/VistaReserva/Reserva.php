@@ -26,6 +26,7 @@ $reservas = $ctrl->listar();
     <title>Elcrud</title>
     <link rel="stylesheet" href="../../Config/css/bootstrap.min.css">
     <link rel="stylesheet" href="../estilos.css">
+    <script src="function.js"></script>
     <!-- SweetAlert2 SIN integrity ni crossorigin -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -252,12 +253,10 @@ $reservas = $ctrl->listar();
     </div>
 </main>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- Bootstrap JS después -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Tu script de handlers al final, después de todo el HTML -->
 <script>
 $(document).ready(function(){
     // Editar
