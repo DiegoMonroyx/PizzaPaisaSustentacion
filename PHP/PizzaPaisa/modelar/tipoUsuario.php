@@ -5,6 +5,19 @@ class TipoUsuario
 {
     public $idTipoUsuario;
     public $tipoUsuario;
+
+    private function obtenerDatos($stmt)
+    {
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $datos = [];
+        while ($row = $result->fetch_assoc()) {
+            $datos[] = $row;
+        }
+        $stmt->close();
+        return $datos;
+    }
+    
     public function modificar()
     {
         $c = (new Conexion())->conectando();

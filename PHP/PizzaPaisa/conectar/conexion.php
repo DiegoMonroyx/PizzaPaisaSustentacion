@@ -2,11 +2,11 @@
 namespace conectar;
     class Conexion{
 
-        private $servidor = "20.55.34.81";
+        private $servidor = "127.0.0.1";
 
         private $usuario = "root";
         
-        private $password = "123456";
+        private $password = "";
 
         private $db = "pizzapaisa";
 

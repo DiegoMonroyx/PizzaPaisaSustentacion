@@ -1,16 +1,13 @@
-# Dockerfile for PHP project
 FROM php:8.1-apache
 
-# Install mysqli extension
 RUN docker-php-ext-install mysqli
+RUN a2enmod rewrite
 
-RUN groupadd -g 1000 appuser && useradd -u 1000 -g appuser -m appuser
-# Copy project files to the web root
+RUN echo '<Directory /var/www/html>\nOptions Indexes FollowSymLinks\nAllowOverride All\nRequire all granted\n</Directory>' > /etc/apache2/conf-available/enable-indexes.conf
+RUN a2enconf enable-indexes
+
 COPY . /var/www/html/
-# Set correct permissions (optional but recommended)
+
 RUN chown -R www-data:www-data /var/www/html
 
-USER appuser
-
-# Expose Apache port
 EXPOSE 80
